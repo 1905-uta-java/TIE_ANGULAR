@@ -1,0 +1,31 @@
+<div class = 'clearfix'>
+    <nav id = 'nav' class ='navbar navbar-expand-lg bg-light navbar-light'>
+        <ul class = 'navbar-nav'>
+            <li class = 'nav-item' id = 'homeLi'>
+                <label for = 'homeNav' class = 'nav-link'>Backpack</label>
+                <input type = 'radio' id = 'homeNav' class = 'nav-link btn btn-link' name = 'navStuff' routerLink='/backpack' routerLinkActive="active">
+            </li>
+            <li class = 'nav-item' id = 'teamInfoLi'>
+                <label for = 'teamInfoNav' class = 'nav-link'>Team Info</label>
+                <input type = 'radio' id = 'teamInfoNav' class = 'nav-link btn btn-link'name = 'navStuff' routerLink='/teamInfo' routerLinkActive="active">
+            </li>
+            <li class = 'nav-item' id = 'teamExploreLi'>
+                <label for = 'teamExploreNav' class = 'nav-link'>Team Explorer</label>
+                <input type='radio' id = 'teamExploreNav' class = 'nav-link btn btn-link' name = 'navStuff' routerLinkActive="active">
+            </li>
+            <li class = 'nav-item' id = 'requestsLi'>
+                <label for = 'requestsNav' class = 'nav-link'>Requests</label>
+                <span class = 'badge'>10</span>
+                <input type='radio' id = 'requestsNav' class = 'nav-link btn btn-link' name = 'navStuff' routerLinkActive="active">
+            </li>
+        </ul>
+        
+        
+        <div class = 'col float-right'>
+            <button id = 'logout_btn' class = 'float-right btn-danger btn'>Logout</button>
+        </div>
+        <!--<button id = 'edit_btn' class = 'float-right btn-default btn' data-toggle='modal' data-target='#updEmpModal'>Edit Info</button>-->
+
+
+    </nav>
+</div>

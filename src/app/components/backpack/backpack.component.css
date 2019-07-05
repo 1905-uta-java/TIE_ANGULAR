@@ -1,0 +1,44 @@
+.pokemonBox{
+    background-color: lightgray;
+    border-radius: 10px;
+}
+
+.full-btn{
+    width:100%;
+}
+
+.pokeLabel{
+    /*line-height: -12px;*/
+    margin-bottom: -10px;
+    font-size: 10pt;
+    font-weight: bold;
+}
+#poke1{
+    cursor:pointer;
+}
+
+.pokeImg{
+    max-height: 55px;
+}
+
+.modal-dialog{
+    max-width: 700px !important;
+}
+
+#poke1:hover{
+    background-color:lightgray;
+}
+
+.poke-yellow{
+    background-color: rgb(255, 191, 0);
+}
+
+@media only screen and (max-width: 576px){
+    .modal-dialog{
+        max-width: 700px !important;
+    }
+    .pokeImg{
+        max-height: 60px;
+        max-width: 70px;
+    }
+}

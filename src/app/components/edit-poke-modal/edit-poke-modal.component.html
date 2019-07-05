@@ -1,0 +1,37 @@
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Edit Pok&eacute;mon</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form>
+        <div class="form-group">
+            <div class = 'row'>
+            <div class = 'col-3'>
+                <label for = 'pokeNewName'>Name</label>
+                <input type = 'text' id = 'pokeNewName' class = 'form-control'>
+            </div>
+            <div class = 'col-1'>
+                <label class = 'pokeLabel'>lvl</label>
+                <div class = 'pokeIdModal'>19</div>
+            </div>
+            <div class = 'col-3'>
+                <label class = 'pokeLabel'>type</label>
+                <div *ngFor = 'let type of types'>
+                    <span>{{type}}</span><br>
+                </div>
+            </div>
+            <div class = 'col-2'>
+                <label class = 'pokeLabel'>ID</label>
+                <div class = 'pokeIdModal'>{{id}}</div>
+            </div>
+            </div>
+        </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Save</button>
+    </div>
+    </ng-template>
