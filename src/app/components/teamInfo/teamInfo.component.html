@@ -1,10 +1,7 @@
 <div class = 'container'>
     <div class = 'row'>
-        <div class = 'col-lg-10'>
+        <div class = 'col-12'>
             <h1>Team Name</h1>
-        </div>
-        <div class = 'col'>
-            <button id = 'trade-btn' class = 'btn btn-warning'>Trade</button>
         </div>
     </div>
 </div>
@@ -66,84 +63,138 @@
                         15
                     </div>
                 </div>
-                <!--<div class = 'row'>
-                    <div class = 'col-6 offset-1'>
-                        ...
+                <div class = 'row'>
+                    <div class = 'col-12'>
+                        <button id = 'trade-btn' class = 'btn btn-warning' (click)="trade.show(1)">Trade</button>
                     </div>
-                </div>-->
+                </div>
+            </div>
+    </div>
+
+        <div class = 'col col-lg-4 col-md-6 col-sm-10'>
+            <div class = 'team-member'>
+                <div class = 'row'>
+                    <div class = 'col col-lg-3 col-md-3 col-sm-3 pokeIcon'>
+                        <img class = 'user-icon' alt='user-icon' src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/132.png'>
+                    </div>
+                    <div class = 'col col-lg-7 col-md-6 col-sm-6'>
+                        <label class = 'pokeLabel'>user</label>
+                        <div class ='team-member-username'>lalaland90</div>
+                    </div>
+                    <div class = 'col col-lg-2 col-md-2 col-sm-2'>
+                        <label class = 'pokeLabel'>lvl</label>
+                        <div class = 'team-member-lvl'>20</div>
+                    </div>
+                </div>
+                <hr class = 'dark-hr'>
+                <div class = 'row'>
+                    <div class = 'col col-2 poke-sm-head'>#</div>
+                    <div class = 'col col-lg-7 col-md-6 col-sm-6 col-6 poke-sm-head'>Pok&eacute;mon</div>
+                    <div class = 'col col-1 poke-sm-head'>lvl</div>
+                </div>
+                <div class = 'row'>
+                    <div class = 'col col-lg-2 col-2'>
+                        1
+                    </div>
+                    <div class = 'col col-lg-7 col-md-6 col-sm-6 col-6'>
+                        Ratta
+                    </div>
+                    <div class = 'col col-lg-1 col-1'>
+                        12
+                    </div>
+                </div>
+                <div class = 'row'>
+                    <div class = 'col col-2 col-2'>
+                        2
+                    </div>
+                    <div class = 'col col-lg-7 col-md-6 col-sm-6 col-6'>
+                        oddish
+                    </div>
+                    <div class = 'col col-lg-1 col-1'>
+                        9
+                    </div>
+                </div>
+                <div class = 'row'>
+                    <div class = 'col col-lg-2 col-2'>
+                        3
+                    </div>
+                    <div class = 'col col-lg-7 col-md-6 col-sm-6 col-6'>
+                        Parasect
+                    </div>
+                    <div class = 'col col-lg-1 col-1'>
+                        2
+                    </div>
+                </div>
+                <div class = 'row'>
+                    <div class = 'col-12'>
+                        <button id = 'trade-btn' class = 'btn btn-warning' (click)="trade.show()">Trade</button>
+                    </div>
+                </div>
             </div>
     </div>
 
 
-<!-- 
-    <div class = 'col-4'>
-        <div class = 'team-member'>
-            <div class = 'row'>
-                <div class = 'col-lg-3 pokeIcon'>
-                    <img class = 'user-icon' alt='user-icon' src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png'>
+    <div bsModal #trade="bs-modal" class = 'modal fade' tabindex="-1" role = "dialog" aria-labelledby="dialog-sizes-name1">
+        <div class = 'modal-dialog modal-lg'>
+            <div class = 'modal-content'>
+                <div class = 'modal-header'>
+                    <h4 id = 'tradeHead' class = 'modal-title pull-left'>Trade Pokemon</h4>
+                    <button type = 'button' class = 'close pull-right' (click)='trade.close()' aria-label='Close'><span aria-hidden="true">&times;</span></button>
                 </div>
-                <div class = 'col-lg-7'>
-                    <label class = 'pokeLabel'>user</label>
-                    <div class ='team-member-username'>Player0105</div>
-                </div>
-                <div class = 'col-lg-2'>
-                    <label class = 'pokeLabel'>lvl</label>
-                    <div class = 'team-member-lvl'>7</div>
-                </div>
-            </div>
-            <hr class = 'dark-hr'>
-            <div class = 'row'>
-                <div class = 'col-2 poke-sm-head'>#</div>
-                <div class = 'col-8 poke-sm-head'>Pok&eacute;mon</div>
-                <div class = 'col-1 poke-sm-head'>lvl</div>
-            </div>
-            <div class = 'row'>
-                <div class = 'col-2'>
-                    1
-                </div>
-                <div class = 'col-lg-8'>
-                    Squirttle
-                </div>
-                <div class = 'col-lg-1'>
-                    7
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class = 'row'>
+                            <div class = 'col col-lg-2 col-md-2 pokeImg'>
+                                <img src= {{curSpriteURL}} alt='stuff'>
+                            </div>
+                            <div class = 'col col-lg-4 col-md-6 col-sm-12 col-12'>
+                                <label for = 'pokeNewName' class = 'pokeLabel'>Name</label>
+                                <input type = 'text' id = 'pokeNewName' class = 'form-control'>
+                            </div>
+                            <div class = 'col col-1 offset-lg-1 offset-md-0'>
+                            <label class = 'pokeLabel'>lvl</label>
+                            <div class = 'pokeIdModal'>{{curLvl}}</div>
+                            </div>
+                            <div class = 'col col-1'>
+                            <label class = 'pokeLabel'>Age</label>
+                            <div>{{curPokeAge}}</div>
+                            </div>
+                            <div class = 'col col-1'>
+                            <label class = 'pokeLabel'>ID</label>
+                            <div class = 'pokeIdModal'>{{curId}}</div>
+                            </div>
+                        </div>
+                        
+                        <div class = 'row'>
+                            <div class = 'col col-4 offset-lg-2'>
+                            <label class = 'pokeLabel'>Move List</label>
+                            <div *ngFor='let move of curMoves'>
+                                <span>{{moves}}</span><br>
+                            </div>
+                            </div>
+                            <div class = 'col col-lg-3 col-md-2 col-sm-6'>
+                            <label class = 'pokeLabel'>type</label>
+                            <div *ngFor = 'let type of curType'>
+                                <span>{{type}}</span><br>
+                                </div>
+                            </div>
+                            <div class = 'col col-3 col-sm-6'>
+                            <label class = 'pokeLabel'>Date Added</label>
+                            <div>{{curDateAdded}}</div>
+                            </div>
+                        </div>
+                        <div class = 'row flex-row-reverse'>
+                            <div class = 'col col-4'>
+                            <button class = 'btn poke-yellow full-btn'>Save</button>
+                            </div>
+                            <div class = 'col col-2 '>
+                            <button class = 'btn btn-default full-btn' (click)="trade.hide(1)">Cancel</button>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class = 'col-4'>
-        <div class = 'team-member'>
-            <div class = 'row'>
-                <div class = 'col-lg-3 pokeIcon'>
-                    <img class = 'user-icon' alt='user-icon' src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/132.png'>
-                </div>
-                <div class = 'col-lg-7'>
-                    <label class = 'pokeLabel'>user</label>
-                    <div class ='team-member-username'>wumbatenforcer</div>
-                </div>
-                <div class = 'col-lg-2'>
-                    <label class = 'pokeLabel'>lvl</label>
-                    <div class = 'team-member-lvl'>7</div>
-                </div>
-            </div>
-            <hr class = 'dark-hr'>
-            <div class = 'row'>
-                <div class = 'col-2 poke-sm-head'>#</div>
-                <div class = 'col-8 poke-sm-head'>Pok&eacute;mon</div>
-                <div class = 'col-1 poke-sm-head'>lvl</div>
-            </div>
-            <div class = 'row'>
-                <div class = 'col-2'>
-                    1
-                </div>
-                <div class = 'col-lg-8'>
-                    Ditto
-                </div>
-                <div class = 'col-lg-1'>
-                    61
-                </div>
-            </div>
-        </div>
-    </div>
-    </div>
-</div>close all-members -->
+</div>
+</div>

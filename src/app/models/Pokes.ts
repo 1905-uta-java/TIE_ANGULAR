@@ -9,17 +9,17 @@ export interface Pokes{
         front_shiny: string,
         front_shiny_female: string
     },
-    //Array<Sprite>,
     name:string,
-    move:[],
+    moves:Array<Move>,
     type: [],
+    id: string
+    //Array<Sprite>,
     //move:Array<Moves>,
     //type: Array<Types>,
-    id: string
 }
 
-interface Moves{
-    name:String
+export interface Move{
+    move:{name:string}
 }
 
 interface Types{

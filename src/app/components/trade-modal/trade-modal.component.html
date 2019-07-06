@@ -1,0 +1,63 @@
+
+<div bsModal #trade="bs-modal" class = 'modal fade' tabindex="-1" role = "dialog" aria-labelledby="dialog-sizes-name1">
+    <div class = 'modal-dialog modal-lg'>
+        <div class = 'modal-content'>
+            <div class = 'modal-header'>
+                <h4 id = 'tradeHead' class = 'modal-title pull-left'>Trade Pokemon</h4>
+                <button type = 'button' class = 'close pull-right' (click)='trade.close()' aria-label='Close'><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class = 'row'>
+                        <div class = 'col col-lg-2 col-md-2 pokeImg'>
+                        <img src= {{curSpriteURL}} alt='stuff'>
+                        </div>
+                        <div class = 'col col-lg-4 col-md-6 col-sm-12 col-12'>
+                        <label for = 'pokeNewName' class = 'pokeLabel'>Name</label>
+                        <input type = 'text' id = 'pokeNewName' class = 'form-control'>
+                        </div>
+                        <div class = 'col col-1 offset-lg-1 offset-md-0'>
+                        <label class = 'pokeLabel'>lvl</label>
+                        <div class = 'pokeIdModal'>{{curLvl}}</div>
+                        </div>
+                        <div class = 'col col-1'>
+                        <label class = 'pokeLabel'>Age</label>
+                        <div>{{pokeAge}}</div>
+                        </div>
+                        <div class = 'col col-1'>
+                        <label class = 'pokeLabel'>ID</label>
+                        <div class = 'pokeIdModal'>{{curId}}</div>
+                        </div>
+                    </div>
+                    
+                    <div class = 'row'>
+                        <div class = 'col col-4 offset-lg-2'>
+                        <label class = 'pokeLabel'>Move List</label>
+                        <div *ngFor='let move of curMoves'>
+                            <span>{{move}}</span><br>
+                        </div>
+                        </div>
+                        <div class = 'col col-lg-3 col-md-2 col-sm-6'>
+                        <label class = 'pokeLabel'>type</label>
+                        <div *ngFor = 'let type of curType'>
+                            <span>{{type}}</span><br>
+                            </div>
+                        </div>
+                        <div class = 'col col-3 col-sm-6'>
+                        <label class = 'pokeLabel'>Date Added</label>
+                        <div>{{curDateAdded}}</div>
+                        </div>
+                    </div>
+                    <div class = 'row flex-row-reverse'>
+                        <div class = 'col col-4'>
+                        <button class = 'btn poke-yellow full-btn'>Save</button>
+                        </div>
+                        <div class = 'col col-2 '>
+                        <button class = 'btn btn-default full-btn' (click)="trade.hide()">Cancel</button>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>

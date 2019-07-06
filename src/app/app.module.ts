@@ -10,6 +10,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { TeamInfoComponent } from './components/teamInfo/teamInfo.component';
 import { EditPokeModalComponent } from './components/edit-poke-modal/edit-poke-modal.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { TradeModalComponent } from './components/trade-modal/trade-modal.component';
+import { PokebackpackComponent } from './components/pokebackpack/pokebackpack.component';
 
 
 
@@ -20,7 +22,9 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     BackpackComponent,
     NavbarComponent,
     TeamInfoComponent,
-    EditPokeModalComponent  
+    EditPokeModalComponent,
+    TradeModalComponent,
+    PokebackpackComponent  
   ],
   imports: [
     BrowserModule,

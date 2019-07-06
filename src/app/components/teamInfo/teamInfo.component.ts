@@ -7,6 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TeamInfoComponent implements OnInit {
 
+  curSpriteURL:string;
+  curLvl:string;
+  curPokeAge:string;
+  curId:string;
+  curMoves:[] = [];
+  curType:[] = [];
+  curDateAdded:string;
+  pokeAge: string;
   constructor() { }
 
   ngOnInit() {
