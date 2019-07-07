@@ -108,10 +108,13 @@ export class BackpackComponent implements OnInit {
     this.userPoke.dateAdded = this.dateAdded;
     this.userPoke.custName = this.custName;
 
-
-    for(let k = 0; k < this.pokeInfoArr[this.counter].moveArr.length; k++){
-      let indx = this.pokeInfoArr[this.counter].moveArr[k];
-      this.userPoke.moveArr.push(pokes.moves[indx].move.name);
+    if(pokes.name === 'ditto'){
+      this.userPoke.moveArr.push(pokes.moves[0].move.name);
+    } else {
+      for(let k = 0; k < this.pokeInfoArr[this.counter].moveArr.length; k++){
+        let indx = this.pokeInfoArr[this.counter].moveArr[k];
+        this.userPoke.moveArr.push(pokes.moves[indx].move.name);
+      }
     }
 
     ++this.counter;

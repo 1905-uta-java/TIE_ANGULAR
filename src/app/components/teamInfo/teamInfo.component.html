@@ -9,7 +9,7 @@
 
 <div class = 'container all-team-members'>
     <div class = 'row justify-contents-center'>
-        <div *ngFor = 'let teammate of teammates' class = 'col col-lg-4 col-md-6 col-sm-10'>
+        <div *ngFor = 'let teammate of teammatesArr' class = 'col col-lg-4 col-md-6 col-sm-10'>
             <div class = 'team-member'>
                 <div class = 'row'>
                     <div class = 'col col-lg-3 col-md-3 col-sm-3 pokeIcon'>
@@ -30,12 +30,12 @@
                     <div class = 'col col-lg-7 col-md-6 col-sm-6 col-6 poke-sm-head'>Pok&eacute;mon</div>
                     <div class = 'col col-1 poke-sm-head'>lvl</div>
                 </div>
-                <div *ngFor = 'let poke of teammate.pokes; let i = index' class = 'row'>
+                <div *ngFor = 'let poke of teammate.userPokeArr; let i = index' class = 'row'>
                     <div class = 'col col-lg-2 col-2'>
                         {{i + 1}}
                     </div>
                     <div class = 'col col-lg-7 col-md-6 col-sm-6 col-6'>
-                        {{poke.id}}
+                        {{poke.name}}
                     </div>
                     <div class = 'col col-lg-1 col-1'>
                         15
@@ -43,201 +43,110 @@
                 </div>
                 <div class = 'row'>
                     <div class = 'col-12'>
-                        <button id = 'trade-btn' class = 'btn btn-warning' (click)="trade.show()">Trade</button>
+                        <button id = 'trade-btn' class = 'btn btn-warning' (click)="openModalWithClass(trade)">Trade</button>
                     </div>
                 </div>
-            </div>
-    </div>
-    <!-- <div class = 'row justify-contents-center'>
-        <div class = 'col col-lg-4 col-md-6 col-sm-10'>
-            <div class = 'team-member'>
-                <div class = 'row'>
-                    <div class = 'col col-lg-3 col-md-3 col-sm-3 pokeIcon'>
-                        <img class = 'user-icon' alt='user-icon' src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/2.png'>
-                    </div>
-                    <div class = 'col col-lg-7 col-md-6 col-sm-6'>
-                        <label class = 'pokeLabel'>user</label>
-                        <div class ='team-member-username'>theDude01</div>
-                    </div>
-                    <div class = 'col col-lg-2 col-md-2 col-sm-2'>
-                        <label class = 'pokeLabel'>lvl</label>
-                        <div class = 'team-member-lvl'>15</div>
-                    </div>
-                </div>
-                <hr class = 'dark-hr'>
-                <div class = 'row'>
-                    <div class = 'col col-2 poke-sm-head'>#</div>
-                    <div class = 'col col-lg-7 col-md-6 col-sm-6 col-6 poke-sm-head'>Pok&eacute;mon</div>
-                    <div class = 'col col-1 poke-sm-head'>lvl</div>
-                </div>
-                <div class = 'row'>
-                    <div class = 'col col-lg-2 col-2'>
-                        1
-                    </div>
-                    <div class = 'col col-lg-7 col-md-6 col-sm-6 col-6'>
-                        Ivysaur
-                    </div>
-                    <div class = 'col col-lg-1 col-1'>
-                        15
-                    </div>
-                </div>
-                <div class = 'row'>
-                    <div class = 'col col-2 col-2'>
-                        2
-                    </div>
-                    <div class = 'col col-lg-7 col-md-6 col-sm-6 col-6'>
-                        Nine-tails
-                    </div>
-                    <div class = 'col col-lg-1 col-1'>
-                        2
-                    </div>
-                </div>
-                <div class = 'row'>
-                    <div class = 'col col-lg-2 col-2'>
-                        3
-                    </div>
-                    <div class = 'col col-lg-7 col-md-6 col-sm-6 col-6'>
-                        Ratta
-                    </div>
-                    <div class = 'col col-lg-1 col-1'>
-                        15
-                    </div>
-                </div>
-                <div class = 'row'>
-                    <div class = 'col-12'>
-                        <button id = 'trade-btn' class = 'btn btn-warning' (click)="trade.show()">Trade</button>
-                    </div>
-                </div>
-            </div>
-    </div> -->
-
-        <!-- <div class = 'col col-lg-4 col-md-6 col-sm-10'>
-            <div class = 'team-member'>
-                <div class = 'row'>
-                    <div class = 'col col-lg-3 col-md-3 col-sm-3 pokeIcon'>
-                        <img class = 'user-icon' alt='user-icon' src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/132.png'>
-                    </div>
-                    <div class = 'col col-lg-7 col-md-6 col-sm-6'>
-                        <label class = 'pokeLabel'>user</label>
-                        <div class ='team-member-username'>lalaland90</div>
-                    </div>
-                    <div class = 'col col-lg-2 col-md-2 col-sm-2'>
-                        <label class = 'pokeLabel'>lvl</label>
-                        <div class = 'team-member-lvl'>20</div>
-                    </div>
-                </div>
-                <hr class = 'dark-hr'>
-                <div class = 'row'>
-                    <div class = 'col col-2 poke-sm-head'>#</div>
-                    <div class = 'col col-lg-7 col-md-6 col-sm-6 col-6 poke-sm-head'>Pok&eacute;mon</div>
-                    <div class = 'col col-1 poke-sm-head'>lvl</div>
-                </div>
-                <div class = 'row'>
-                    <div class = 'col col-lg-2 col-2'>
-                        1
-                    </div>
-                    <div class = 'col col-lg-7 col-md-6 col-sm-6 col-6'>
-                        Ratta
-                    </div>
-                    <div class = 'col col-lg-1 col-1'>
-                        12
-                    </div>
-                </div>
-                <div class = 'row'>
-                    <div class = 'col col-2 col-2'>
-                        2
-                    </div>
-                    <div class = 'col col-lg-7 col-md-6 col-sm-6 col-6'>
-                        oddish
-                    </div>
-                    <div class = 'col col-lg-1 col-1'>
-                        9
-                    </div>
-                </div>
-                <div class = 'row'>
-                    <div class = 'col col-lg-2 col-2'>
-                        3
-                    </div>
-                    <div class = 'col col-lg-7 col-md-6 col-sm-6 col-6'>
-                        Parasect
-                    </div>
-                    <div class = 'col col-lg-1 col-1'>
-                        2
-                    </div>
-                </div>
-                <div class = 'row'>
-                    <div class = 'col-12'>
-                        <button id = 'trade-btn' class = 'btn btn-warning' (click)="trade.show()">Trade</button>
-                    </div>
-                </div>
-            </div>
-    </div> -->
-
-
-    <div bsModal #trade="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-sizes-name1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h4 id="dialog-sizes-name1" class="modal-title pull-left">Trade Pok&eacute;mon</h4>
-                <button type="button" class="close pull-right" (click)="trade.hide()" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <div class = 'row'>
-                    <div class = 'col col-lg-2 col-md-2 pokeImg'>
-                        <img src= {{spriteURL}} alt='stuff'>
-                    </div>
-                    <div class = 'col col-lg-4 col-md-6 col-sm-12 col-12'>
-                        <label for = 'pokeNewName' class = 'pokeLabel'>Name</label>
-                        <input type = 'text' id = 'pokeNewName' class = 'form-control'>
-                    </div>
-                    <div class = 'col col-1 offset-lg-1 offset-md-0'>
-                        <label class = 'pokeLabel'>lvl</label>
-                        <div class = 'pokeIdModal'>{{lvl}}</div>
-                    </div>
-                    <div class = 'col col-1'>
-                        <label class = 'pokeLabel'>Age</label>
-                        <div>{{pokeAge}}</div>
-                    </div>
-                    <div class = 'col col-1'>
-                        <label class = 'pokeLabel'>ID</label>
-                        <div class = 'pokeIdModal'>{{id}}</div>
-                    </div>
-                    </div>
-                    
-                    <div class = 'row'>
-                    <div class = 'col col-4 offset-lg-2'>
-                        <label class = 'pokeLabel'>Move List</label>
-                        <div *ngFor='let move of moves'>
-                        <span>{{move}}</span><br>
-                        </div>
-                    </div>
-                    <div class = 'col col-lg-3 col-md-2 col-sm-6'>
-                        <label class = 'pokeLabel'>type</label>
-                        <div *ngFor = 'let type of types'>
-                            <span>{{type}}</span><br>
-                        </div>
-                    </div>
-                    <div class = 'col col-3 col-sm-6'>
-                        <label class = 'pokeLabel'>Date Added</label>
-                        <div>{{dateAdded}}</div>
-                        </div>
-                    </div>
-                    <div class = 'row flex-row-reverse'>
-                    <div class = 'col col-4'>
-                        <button class = 'btn poke-yellow full-btn'>Save</button>
-                    </div>
-                    <div class = 'col col-2 '>
-                        <button class = 'btn btn-default full-btn' (click)="trade.hide()">Cancel</button>
-                    </div>
-                    </div>
-                </div>
-            </div>
             </div>
         </div>
     </div>
-          
 </div>
-</div>
+
+
+<ng-template #trade>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Trade with theDude01</h4>
+        <button type="button" class="close pull-right" (click)="trade.hide()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <div class = 'row'>
+                <div class = 'col col-1'>
+                    <!-- <img src = "{{spriteURL}}"> -->
+                    <img src = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png">
+                </div>
+                <div class = 'col col-1 offset-1'>
+                    <label class = 'pokeLabel'>lvl</label>
+                    <div class = 'pokeIdModal'>19</div>
+                    <!-- <div class = 'pokeIdModal'>{{lvl}}</div> -->
+                </div>
+                <div class = 'col col-3 rightBorder'>
+                    <label class = 'pokeLabel'>Moves</label>
+                    <div>
+                        <span>yadda</span><br>
+                        <span>yadda</span><br>
+                        <span>yadda</span><br>
+                        <span>yadda</span><br>
+                    </div>
+                    <!-- <div *ngFor='let move of moves'>
+                        <span>{{move}}</span><br>
+                    </div> -->
+                </div>
+                <div class = 'col col-3'>
+                    <div class = 'pokeLabel'>Pok&eacute; Info</div>
+                    <div id = 'pokeInfo1'></div>
+                </div>
+                <div class = 'col col-3'>
+                    <select class = 'tradePokePicker-btn big-boy-btn btn'>
+                        <option value = '0' selected disabled>Select Pok&eacute;mon</option>
+                        <option value = '1'>Pikachu : 18</option>
+                        <option value = '2'>Richu : 18</option>
+                        <option value = '3'>Charizard : 18</option>
+                    </select>
+                </div>
+            </div>
+            <div class = 'row'>
+                <div class = 'col col-12'>
+                    <hr>
+                </div>
+            </div>
+            <div class = 'row'>
+                <div class = 'col col-1'>
+                    <!-- <img src = "{{spriteURL}}"> -->
+                    <img src = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/132.png">
+                </div>
+                <div class = 'col col-1 offset-1'>
+                    <label class = 'pokeLabel'>lvl</label>
+                    <div class = 'pokeIdModal'>10</div>
+                    <!-- <div class = 'pokeIdModal'>{{lvl}}</div> -->
+                </div>
+                <div class = 'col col-3 rightBorder'>
+                    <label class = 'pokeLabel'>Moves</label>
+                    <div>
+                        <span>yadda</span><br>
+                        <span>yadda</span><br>
+                        <span>yadda</span><br>
+                        <span>yadda</span><br>
+                    </div>
+                    <!-- <div *ngFor='let move of moves'>
+                        <span>{{move}}</span><br>
+                    </div> -->
+                </div>
+                <div class = 'col col-3'>
+                    <div class = 'pokeLabel'>Pok&eacute; Info</div>
+                    <div id = 'pokeInfo1'></div>
+                </div>
+                <div class = 'col col-3'>
+                    <select class = 'tradePokePicker-btn big-boy-btn btn'>
+                        <option value = '0' selected disabled>Select Pok&eacute;mon</option>
+                        <option value = '1'>Pikachu : 18</option>
+                        <option value = '2'>Richu : 18</option>
+                        <option value = '3'>Charizard : 18</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class = 'modal-footer'>
+            <div class = 'col col-6'>
+                <button class = 'btn btn-warning'>Send Trade Request</button>
+            </div>
+            <div class = 'col col-6'>
+                <button class = 'btn btn-default'>Canel</button>
+            </div>
+        </div>
+</ng-template>
+
+
+

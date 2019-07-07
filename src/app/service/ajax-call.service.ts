@@ -15,7 +15,7 @@ export class AjaxCallService {
 
   //works for both ID and name, as long as they are strings
   getPoke(inStr:string): Promise<Pokes> {
-    console.log(this.http.get<Pokes>(this.url+inStr));
+    //console.log(this.http.get<Pokes>(this.url+inStr));
     return this.http.get<Pokes>(this.url+inStr).toPromise();
   }
   /*getPoke(inStr:string): Observable<Pokes> {
