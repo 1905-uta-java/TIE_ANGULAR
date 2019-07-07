@@ -41,7 +41,56 @@
 </div>
   -->
 
-<div id = 'userPokes'></div>
+<!-- <div id = 'userPokes'></div> -->
+<div *ngFor = 'let userPokemon of userPokeArr' id = 'poke{{userPokemon.id}}' (click)="setCurrData($event); lgModal.show()"> <!-- {{userPokeArr[i].id}} -->
+  <div class = 'col-lg-10 col-md-12 offset-lg-1 offset-md-0' >
+    <div  class = 'row' >
+      <div class = 'col col-lg-2 col-md-2 col-sm-2 offset-lg-0 offset-sm-1 offset-md-2 pokeImg'>
+        <img src= {{userPokemon.sprite}} alt='stuff'>
+      </div>
+      <div class = 'col col-lg-2 col-md-3 col-sm-3'>
+        <label class = 'pokeLabel'>Name</label>
+        <div class = 'pokename'>{{userPokemon.name}}</div>
+      </div>
+      <div class = 'col col-lg-1 col-md-1 col-sm-2'>
+        <label  class = 'pokeLabel'>Level</label>
+        <div class = 'pokeLvl'>12</div>
+      </div>
+      <div class = 'col col-md-2 col-sm-3 d-lg-none'>
+        <label class = 'pokeLabel'>ID</label>
+        <div class = 'pokeID'>{{userPokemon.id}}</div>
+      </div>
+  
+      <div class = 'col col-lg-3 col-md-4 col-sm-4 offset-lg-0 offset-md-4 offset-sm-3'>
+        <label  class = 'pokeLabel'>Moves</label>
+        <div class = 'pokeMoveList'> 
+          <div *ngIf="userPokemon.moveArr.length > 0; else elseBlock">
+            <div *ngFor='let move of userPokemon.moveArr'>
+                <span>{{move}}</span><br>
+            </div>
+          </div>
+          <ng-template #elseBlock>N/A</ng-template>
+        </div>
+      </div>
+      <div class = 'col col-lg-2 col-md-3 col-sm-2'>
+        <label class = 'pokeLabel'>Type</label>
+        <div class = 'pokeTypes'>
+          <div *ngIf="userPokemon.type.length > 0; else elseType">
+            <div *ngFor='let pokeType of userPokemon.type'>
+              <span>{{pokeType}}</span><br>
+            </div>
+          </div>
+          <ng-template #elseType>N/A</ng-template>
+        </div>
+      </div>
+      <div class = 'col col-lg-1 d-lg-block d-none'>
+        <label class = 'pokeLabel'>ID</label>
+        <div class = 'pokeID'>{{userPokemon.id}}</div>
+      </div>
+    </div>
+    <hr>
+  </div>
+</div>
 
 <!-- POKE MODAL -->
 <div bsModal #lgModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-sizes-name1">
