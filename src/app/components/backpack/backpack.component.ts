@@ -43,7 +43,7 @@ export class BackpackComponent implements OnInit {
                             {id: '56', moveArr:['6', '52', '19', '21']},
                             {id: '82', moveArr:['1', '36', '15', '24']}
                           ];
-  moves:string[] = [];
+  moves:Move[] = [];
   types:string[] = [];
   counter:number = 0;
   newCounter:number = 0;
@@ -68,7 +68,14 @@ export class BackpackComponent implements OnInit {
   constructor(private pokeService: AjaxCallService, private modalService: BsModalService, private globalPokes: GlobalPokes) { }
 
   ngOnInit() {
-    this.getPokes();
+    if(this.globalPokes.getPokesLength() == 6){
+      this.userPokeArr = this.globalPokes.getAllPokes();
+      console.log("Calling draw components, globalPokes is already filled");
+      this.drawComponents();
+    } else {
+      this.getPokes();
+
+    }
   }    
 
   //TODO - gotta...ya know, do DB calls so we can get the correct moves and such
@@ -76,26 +83,20 @@ export class BackpackComponent implements OnInit {
 
   
   getPokes(){
-    if(this.globalPokes.getPokesLength() == 6){
-      this.userPokeArr = this.globalPokes.getAllPokes();
-      console.log("Calling draw components, globalPokes is already filled");
-      this.drawComponents();
-    } else {
-      for(let i = 0; i < this.pokeInfoArr.length; i++){
-        console.log("Getting API info for Poke with id: " + this.pokeInfoArr[i].id + " and it's got a length of: " + this.pokeInfoArr.length);
-        this.pokeService.getPoke(this.pokeInfoArr[i].id).then((pokes)=>{
-          this.pokes = pokes;
-          
-          if(this.pokeArr.includes(this.pokes) === false)
-            this.pokeArr.push(this.pokes); // add to a global array 
-          
-          console.log("CALLING DATA!!!");
-  
-          this.data(this.pokes);
-        });/*.catch(function(error){
-          console.log(error.error);
-        })*/
-      }
+    for(let i = 0; i < this.pokeInfoArr.length; i++){
+      console.log("Getting API info for Poke with id: " + this.pokeInfoArr[i].id + " and it's got a length of: " + this.pokeInfoArr.length);
+      this.pokeService.getPoke(this.pokeInfoArr[i].id).then((pokes)=>{
+        this.pokes = pokes;
+        
+        if(this.pokeArr.includes(this.pokes) === false)
+          this.pokeArr.push(this.pokes); // add to a global array 
+        
+        console.log("CALLING DATA!!!");
+
+        this.data(this.pokes);
+      });/*.catch(function(error){
+        console.log(error.error);
+      })*/
     }
   }
   
@@ -160,6 +161,10 @@ export class BackpackComponent implements OnInit {
     }
   }
 
+  refreshPokes(){
+    this.getPokes();
+  }
+
 
 
   openModalWithClass(template:TemplateRef<any>){
@@ -170,16 +175,15 @@ export class BackpackComponent implements OnInit {
   }
 
   //TODO - implement this later. 
-  setCurrData(event){
+  setCurrData(userPokemon){
     console.log("HIIIII!!");
-    //console.log(event.id);
-    //let indx = event.target.id;
-    /*
-    this.curType = this.userPokeArr[indx].type;
-    this.curSpriteURL = this.userPokeArr[indx].sprite;
-    this.curPokeAge = "12";
-    this.curId = this.userPokeArr[indx].id;
-    this.curMove = this.userPokeArr[indx].moveArr;*/
+    console.log(userPokemon);
+    
+    this.types = userPokemon.type;
+    this.spriteURL = userPokemon.sprite;
+    this.pokeAge = "12";
+    this.id = userPokemon.id;
+    this.moves = userPokemon.moveArr;
   }
 
 

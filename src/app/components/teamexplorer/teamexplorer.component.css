@@ -6,3 +6,17 @@
 .all-teams{
     margin-top:20px;
 }
+
+.ref-btn{
+    margin-top: 10px;
+}
+
+.page-title{
+    margin-top: 10px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid lightgray;
+    position: sticky;
+    top: 0px;
+    background-color: white;
+    z-index: 100;
+}

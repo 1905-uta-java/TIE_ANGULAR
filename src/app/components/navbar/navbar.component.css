@@ -10,3 +10,8 @@
 	color: white;
 	position: absolute;
 }
+
+
+.stick-me{
+	position:fixed;
+}

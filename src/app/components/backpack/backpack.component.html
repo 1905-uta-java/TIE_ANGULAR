@@ -1,4 +1,14 @@
-<div *ngFor = 'let userPokemon of userPokeArr' id = 'poke{{userPokemon.id}}' (click)="setCurrData($event); lgModal.show()"> <!-- {{userPokeArr[i].id}} -->
+<div class = 'container page-title'>
+  <div class = 'row'>
+      <div class = 'col col-10'>
+          <h1>Backpack</h1>
+      </div>
+      <div class = 'col col-2'>
+        <button class = 'btn btn-default ref-btn' (click)='refreshPokes()'>Refresh</button>
+      </div>
+  </div>
+</div>
+<div *ngFor = 'let userPokemon of userPokeArr' id = 'poke{{userPokemon.id}}' (click)="setCurrData(userPokemon); lgModal.show()"> <!-- {{userPokeArr[i].id}} -->
   <div class = 'col-lg-10 col-md-12 offset-lg-1 offset-md-0' >
     <div  class = 'row' >
       <div class = 'col col-lg-2 col-md-2 col-sm-2 offset-lg-0 offset-sm-1 offset-md-2 pokeImg'>

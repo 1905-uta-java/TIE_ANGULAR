@@ -33,6 +33,20 @@
     background-color: rgb(255, 191, 0);
 }
 
+.ref-btn{
+    margin-top:10px;
+}
+
+.page-title{
+    margin-top: 10px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid lightgray;
+    position: sticky;
+    top: 0px;
+    background-color: white;
+    z-index: 100;
+}
+
 @media only screen and (max-width: 576px){
     .modal-dialog{
         max-width: 700px !important;

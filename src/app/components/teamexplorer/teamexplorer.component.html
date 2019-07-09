@@ -1,3 +1,14 @@
+<div class = 'container'>
+    <div class = 'row'>
+        <div class = 'col col-10'>
+            <h1>Team Explorer</h1>
+        </div>
+        <div class ='col col-2'>
+            <button class = 'btn btn-default ref-btn'>Refresh</button>
+        </div>
+    </div>
+</div>
+
 <div class = 'container all-teams'>
     <div class = 'row justify-contents-center'>
         <div class = 'col col-lg-6 col-sm-10'>
@@ -8,11 +19,11 @@
                     </div>
                     <div class = 'col col-lg-7 col-md-6 col-sm-6'>
                         <label class = 'pokeLabel'>user</label>
-                        <div class ='team-member-username'>{{teammate.username}}</div>
+                        <div class ='team-member-username'>theDude01</div>
                     </div>
                     <div class = 'col col-lg-2 col-md-2 col-sm-2'>
                         <label class = 'pokeLabel'>lvl</label>
-                        <div class = 'team-member-lvl'>{{teammate.level}}</div>
+                        <div class = 'team-member-lvl'>40</div>
                     </div>
                 </div>
                 <hr class = 'dark-hr'>
@@ -21,12 +32,12 @@
                     <div class = 'col col-lg-7 col-md-6 col-sm-6 col-6 poke-sm-head'>Pok&eacute;mon</div>
                     <div class = 'col col-1 poke-sm-head'>lvl</div>
                 </div>
-                <div *ngFor = 'let poke of teammate.userPokeArr; let i = index' class = 'row'>
+                <div class = 'row'>
                     <div class = 'col col-lg-2 col-2'>
-                        {{i + 1}}
+                        1
                     </div>
                     <div class = 'col col-lg-7 col-md-6 col-sm-6 col-6'>
-                        {{poke.name}}
+                        Charizard
                     </div>
                     <div class = 'col col-lg-1 col-1'>
                         15
@@ -34,7 +45,7 @@
                 </div>
                 <div class = 'row'>
                     <div class = 'col-12'>
-                        <button id = 'trade-btn' class = 'btn btn-warning' (click)="openModalWithClass(trade)">Trade</button>
+                        <button id = 'trade-btn' class = 'btn btn-warning'>Trade</button>
                     </div>
                 </div>
             </div>
