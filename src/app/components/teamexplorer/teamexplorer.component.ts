@@ -6,6 +6,7 @@ import { UserPokes } from 'src/app/models/UserPokes';
 import { PokeInfo } from 'src/app/models/PokeInfo';
 import { TeammateInfo } from 'src/app/models/TeammateInfo';
 import { GlobalAllTeams } from 'src/app/components/global/globalAllTeams';
+import { AjaxCallService } from 'src/app/service/ajax-call.service';
 
 
 @Component({
@@ -40,6 +41,7 @@ export class TeamexplorerComponent implements OnInit {
 
 
   team: Team;
+  allTeams: Team[];
 
   /*
  modalRef : BsModalRef;
@@ -100,9 +102,10 @@ export class TeamexplorerComponent implements OnInit {
   team: Team = {teamName: "TIE", teammates: this.teammatesArr};
 */
 
-  constructor(private globalAllTeams:GlobalAllTeams) {  }
+  constructor(private pokeService: AjaxCallService , private globalAllTeams:GlobalAllTeams) {  }
 
   ngOnInit() {
+
     this.teamName = "Team Name and stuff";
     this.userPoke = {id:"0", name:"", sprite:"", dateAdded:"", type:[], custName:"", moveArr:[]};
  //userPokeArr:UserPokes[] = [];
@@ -155,17 +158,35 @@ export class TeamexplorerComponent implements OnInit {
                    id:""
                  };
   this.pokeArr = [];
+
+  this.allTeams = [{teamName: "team_tie", teammates: this.teammatesArr}, 
+                   {teamName: "this_other_team", teammates:this.teammatesArr}];
+
                  
   this.getAllTeams();
 
-}
-
-  getAllTeams(){
-    //do things
   }
 
-  data(){
-    //do things
+  getAllTeams(){
+    if(this.globalAllTeams.getAllTeamLength() !== 0){
+      console.log('just do things');
+      this.globalAllTeams.setAllTeams(this.allTeams);
+    } else {
+      for(let i = 0; i < this.teammatesArr.length; i++){ //gets teammate
+        for(let j = 0; j < this.teammatesArr[i].pokes.length; j++){ //gets 1 poke of current teammate
+          this.pokeService.getPoke(this.teammatesArr[i].pokes[j].id).then((pokes)=>{
+            console.log("");
+            this.pokes = pokes;
+            this.data(this.pokes);
+          });
+        }
+      }
+    }
+  }
+
+  data(poke:Pokes){
+    
+    
   }
 
 }
