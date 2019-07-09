@@ -12,7 +12,11 @@ import { EditPokeModalComponent } from './components/edit-poke-modal/edit-poke-m
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TradeModalComponent } from './components/trade-modal/trade-modal.component';
 import { PokebackpackComponent } from './components/pokebackpack/pokebackpack.component';
-
+import { TeamexplorerComponent } from './components/teamexplorer/teamexplorer.component';
+import { RequestsComponent } from './components/requests/requests.component';
+import { GlobalPokes } from './components/global/globalPokes';
+import { GlobalTeam } from './components/global/globalTeam';
+import { GlobalAllTeams } from './components/global/globalAllTeams';
 
 
 @NgModule({
@@ -24,7 +28,9 @@ import { PokebackpackComponent } from './components/pokebackpack/pokebackpack.co
     TeamInfoComponent,
     EditPokeModalComponent,
     TradeModalComponent,
-    PokebackpackComponent  
+    PokebackpackComponent,
+    TeamexplorerComponent,
+    RequestsComponent  
   ],
   imports: [
     BrowserModule,
@@ -32,7 +38,9 @@ import { PokebackpackComponent } from './components/pokebackpack/pokebackpack.co
     AppRoutingModule,
     ModalModule.forRoot()
   ],
-  providers: [],
+  providers: [ GlobalPokes,
+               GlobalTeam ,
+               GlobalAllTeams ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

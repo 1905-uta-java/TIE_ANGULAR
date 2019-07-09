@@ -7,6 +7,7 @@ import { PokeInfo } from '../../models/PokeInfo';
 import { UserPokes } from '../../models/UserPokes';
 import { Move } from '../../models/Pokes';
 import { Template } from '@angular/compiler/src/render3/r3_ast';
+import { GlobalPokes } from '../global/globalPokes';
 
 @Component({
   selector: 'app-backpack',
@@ -14,7 +15,6 @@ import { Template } from '@angular/compiler/src/render3/r3_ast';
   styleUrls: ['./backpack.component.css']
 })
 export class BackpackComponent implements OnInit {
-
   move:Move = {move:{name:""}};
   modalRef : BsModalRef;
   pokes: Pokes = {sprite: {back_default: "",
@@ -65,7 +65,7 @@ export class BackpackComponent implements OnInit {
   curDateAdded:string;
   
   
-  constructor(private pokeService: AjaxCallService, private modalService: BsModalService) { }
+  constructor(private pokeService: AjaxCallService, private modalService: BsModalService, private globalPokes: GlobalPokes) { }
 
   ngOnInit() {
     this.getPokes();
@@ -76,27 +76,33 @@ export class BackpackComponent implements OnInit {
 
   
   getPokes(){
-    //console.log("pokeIdArr is " + this.pokeIdArr.length + " units in length");
-    for(let i = 0; i < this.pokeInfoArr.length; i++){
-      console.log("Getting API info for Poke with id: " + this.pokeInfoArr[i].id + " and it's got a length of: " + this.pokeInfoArr.length);
-      this.pokeService.getPoke(this.pokeInfoArr[i].id).then((pokes)=>{
-        this.pokes = pokes;
-        
-        if(this.pokeArr.includes(this.pokes) === false)
-          this.pokeArr.push(this.pokes); // add to a global array 
-        
-        console.log("CALLING DATA!!!");
-
-        this.data(this.pokes);
-      });/*.catch(function(error){
-        console.log(error.error);
-      })*/
+    if(this.globalPokes.getPokesLength() == 6){
+      this.userPokeArr = this.globalPokes.getAllPokes();
+      console.log("Calling draw components, globalPokes is already filled");
+      this.drawComponents();
+    } else {
+      for(let i = 0; i < this.pokeInfoArr.length; i++){
+        console.log("Getting API info for Poke with id: " + this.pokeInfoArr[i].id + " and it's got a length of: " + this.pokeInfoArr.length);
+        this.pokeService.getPoke(this.pokeInfoArr[i].id).then((pokes)=>{
+          this.pokes = pokes;
+          
+          if(this.pokeArr.includes(this.pokes) === false)
+            this.pokeArr.push(this.pokes); // add to a global array 
+          
+          console.log("CALLING DATA!!!");
+  
+          this.data(this.pokes);
+        });/*.catch(function(error){
+          console.log(error.error);
+        })*/
+      }
     }
   }
   
 
 
   data(pokes:Pokes){
+    console.log(this.globalPokes);
     console.log(this.userPokeArr);
 
     this.newCounter++;
@@ -124,6 +130,12 @@ export class BackpackComponent implements OnInit {
       this.userPoke.type.push(pokes["types"][k].type.name);      
 
     this.userPokeArr.push(this.userPoke); 
+    console.log(this.userPokeArr);
+    this.globalPokes.setAllPokes(this.userPokeArr);
+    console.log(this.globalPokes.getAllPokes());
+    console.log("With length: " + this.globalPokes.getPokesLength());
+    console.log(this.userPokeArr);
+
     // empty userPoke
     this.userPoke = {id:"0", name:"", sprite:"", dateAdded:"", type:[], custName:"", moveArr:[]};
     

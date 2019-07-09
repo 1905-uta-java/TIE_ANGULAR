@@ -18,8 +18,4 @@ export class AjaxCallService {
     //console.log(this.http.get<Pokes>(this.url+inStr));
     return this.http.get<Pokes>(this.url+inStr).toPromise();
   }
-  /*getPoke(inStr:string): Observable<Pokes> {
-    console.log(this.http.get<Pokes>(this.url+inStr));
-    return this.http.get<Pokes>(this.url+inStr);
-  }*/
 }
