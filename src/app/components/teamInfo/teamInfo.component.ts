@@ -10,6 +10,7 @@ import { Template } from '@angular/compiler/src/render3/r3_ast';
 import { TeammateInfo } from 'src/app/models/TeammateInfo';
 import { GlobalTeam } from 'src/app/components/global/globalTeam';
 import { PokesObj } from '../pokesObj';
+import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-teamInfo',
@@ -233,6 +234,22 @@ export class TeamInfoComponent implements OnInit {
     );
   }
 
+  closeModal(template:TemplateRef<any>){
+    this.modalService.hide(1);
+    this.modalService._hideModal(1);
+    this.emptyTradeArr();
+  }
+
+  emptyTradeArr(){
+    this.tradePokeArr = [{sprite: {back_default: "",back_female: "",back_shiny: "",back_shiny_female: "",front_default: "",front_female: "",front_shiny: "",front_shiny_female: ""},name:"",moves:[this.move],type:[],id:"0"},
+                            {sprite: {back_default: "",back_female: "",back_shiny: "",back_shiny_female: "",front_default: "",front_female: "",front_shiny: "",front_shiny_female: ""},name:"",moves:[this.move],type:[],id:"0"},
+                            {sprite: {back_default: "",back_female: "",back_shiny: "",back_shiny_female: "",front_default: "",front_female: "",front_shiny: "",front_shiny_female: ""},name:"",moves:[this.move],type:[],id:"0"},
+                            {sprite: {back_default: "",back_female: "",back_shiny: "",back_shiny_female: "",front_default: "",front_female: "",front_shiny: "",front_shiny_female: ""},name:"",moves:[this.move],type:[],id:"0"},
+                            {sprite: {back_default: "",back_female: "",back_shiny: "",back_shiny_female: "",front_default: "",front_female: "",front_shiny: "",front_shiny_female: ""},name:"",moves:[this.move],type:[],id:"0"},
+                            {sprite: {back_default: "",back_female: "",back_shiny: "",back_shiny_female: "",front_default: "",front_female: "",front_shiny: "",front_shiny_female: ""},name:"",moves:[this.move],type:[],id:"0"},
+                        ]; // = new Array<Pokes>(6);
+  }
+
   showInfo(teammate: TeammateInfo){
     console.log(teammate);
     this.selTeammate = teammate;
@@ -290,6 +307,10 @@ export class TeamInfoComponent implements OnInit {
                           id:"0"};
 
     }
+  }
+
+  clearPokeInfo(){
+    // do things
   }
 
 }
