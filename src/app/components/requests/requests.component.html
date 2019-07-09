@@ -1,1 +1,111 @@
 <p>okay so this is in progress cuz I need a wireframe for it </p>
+<div class = 'container'>
+    <div class = 'row'>
+        <div class = 'col col-10'>
+            <h3>Pending Requests</h3>
+        </div>
+        <div class = 'col col-2'>
+            <button class = 'btn btn-warning btn-all'>Save</button>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class = 'row '>
+        <div class = 'req'>
+            
+        </div>
+        <div class = 'col col-1'>
+            <label class = 'pokeLabel'>type</label>
+            <div class = 'reqType'>Trade</div>
+        </div>
+        <div class = 'col-3 offset-2 sep ' [hidden]='downHidden'>
+            <div class = 'row'>
+                <div class = 'col col-1 offset-4'>
+                    <label class = 'pokeLabel'>lvl</label>
+                    <div>19</div>
+                </div>
+                <div class = 'col col-6'>
+                    <label class = 'pokeLabel'>theDude01</label>
+                    <img class = 'reqImg' src = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/56.png'>
+                </div>
+            </div>
+        </div>
+        <div class = 'col-4' [hidden]='downHidden'>
+            <div class = 'row'>
+                <div class = 'col col-6 text-right'>
+                    <label class = 'pokeLabel'>theDude01</label>
+                    <img class = 'reqImg' src = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png'>
+                </div>
+                <div class = 'col col-6'>
+                    <label class = 'pokeLabel'>lvl</label>
+                    <div>19</div>
+                </div>
+            </div>
+        </div>
+
+        <div class = 'col-5 sep' [hidden]='upHidden'>
+            <div class = 'row'>
+                <div class = 'col col-4 text-right'>
+                    <label class = 'pokeLabel'>lvl</label>
+                    <div>19</div>
+                </div>
+                <div class = 'col col-3 text-right'>
+                    <label class = 'pokeLabel'>theDude01</label>
+                    <img class = 'reqImg' src = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/56.png'>
+                </div>
+                <div class = 'col col-4 text-right'>
+                    <label class = 'pokeLabel'>moves</label>
+                    <div>
+                        <span>yadda</span><br>
+                        <span>yadda</span><br>
+                        <span>yadda</span><br>
+                        <span>yadda</span><br>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class = 'col-4' [hidden]='upHidden'>
+            <div class = 'row'>
+                <div class = 'col col-4 offset-1'>
+                    <label class = 'pokeLabel'>moves</label>
+                    <div>
+                        <span>yadda</span><br>
+                        <span>yadda</span><br>
+                        <span>yadda</span><br>
+                        <span>yadda</span><br>
+                    </div>
+                </div>
+                <div class = 'col col-4 text-right'>
+                    <label class = 'pokeLabel'>theDude01</label>
+                    <img class = 'reqImg' src = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png'>
+                </div>
+                <div class = 'col col-3'>
+                    <label class = 'pokeLabel'>lvl</label>
+                    <div>19</div>
+                </div>
+            </div>
+        </div>
+
+        <div class = 'col col-2 response-btn-container text-right'>
+            <button class = 'btn btn-warning btn-all response-btns'>Accept</button>
+            <button class = 'btn btn-danger btn-all response-btns'>Deny</button>
+        </div>
+        
+    </div>
+    <div class = 'row justify-content-center'>
+        <div class = 'col col-7 text-center'>
+            <div id = 'down-arrow' class = 'more-arrow' (click) = 'showUpArrow()' [hidden]='downHidden'>&#8964;</div>
+        </div>
+        <div class = 'col col-7 text-center'>
+            <div id = 'up-arrow' class = 'more-arrow' (click) = 'showDownArrow()' [hidden]='upHidden'>&#8963;</div>
+        </div>
+    </div>
+
+    <hr>
+
+
+
+
+</div>
