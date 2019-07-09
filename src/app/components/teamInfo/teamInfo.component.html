@@ -54,7 +54,7 @@
                 </div>
                 <div class = 'row'>
                     <div class = 'col-12'>
-                        <button id = 'trade-btn' class = 'btn btn-warning' (click)="openModalWithClass(trade)">Trade</button>
+                        <button id = 'trade-btn' class = 'btn btn-warning' (click)="showInfo(teammate); openModalWithClass(trade)">Trade</button>
                     </div>
                 </div>
             </div>
@@ -65,86 +65,69 @@
 
 <ng-template #trade>
     <div class="modal-header">
-        <h4 class="modal-title pull-left">Trade with theDude01</h4>
+        <h4 class="modal-title pull-left">Trade with {{selTeammate.username}}</h4>
         <button type="button" class="close pull-right" (click)="trade.hide()" aria-label="Close">
         <span aria-hidden="true">&times;</span>
         </button>
     </div>
     <div class="modal-body">
-        <div class="form-group">
+        <div class = 'row'>
+            <div class = 'col-5'>
+                <h3>{{selTeammate.username}}</h3>
+            </div>
+            <div class = 'col-7 text-right'>
+                <h3>You</h3>
+            </div>
+        </div>
+        <div class="form-group" *ngFor='let pokemon of selTeammate.userPokeArr; let i = index'>
             <div class = 'row'>
                 <div class = 'col col-1'>
-                    <!-- <img src = "{{spriteURL}}"> -->
-                    <img src = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png">
+                    <img src = "{{pokemon.sprite}}">
                 </div>
-                <div class = 'col col-1 offset-1'>
+                <div class = 'col col-1 cust-offset text-right'>
                     <label class = 'pokeLabel'>lvl</label>
                     <div class = 'pokeIdModal'>19</div>
-                    <!-- <div class = 'pokeIdModal'>{{lvl}}</div> -->
                 </div>
-                <div class = 'col col-3 rightBorder'>
+                <div class = 'col col-2 rightBorder text-right'>
                     <label class = 'pokeLabel'>Moves</label>
-                    <div>
-                        <span>yadda</span><br>
-                        <span>yadda</span><br>
-                        <span>yadda</span><br>
-                        <span>yadda</span><br>
-                    </div>
-                    <!-- <div *ngFor='let move of moves'>
+                    <div *ngFor = 'let move of pokemon.moveArr'>
                         <span>{{move}}</span><br>
-                    </div> -->
+                    </div>
+                </div>
+        <!-- OOOOKAY this is user's chosen poke -->
+                <div class = 'col col-4'>
+                    <div *ngIf='tradePokeArr[i].id == 0'>
+                        <label>No Poke Selected</label>
+                    </div>
+                    <div *ngIf='tradePokeArr[i].id != 0'>
+                        <div class = 'row'>
+                            <div class = 'col-6'>
+                                <div class = 'pokeLabel'>Moves</div>
+                                <div *ngFor = 'let move of tradePokeArr[i].moves'>
+                                    <span>{{move.move.name}}</span><br>
+                                </div>
+                            </div>
+                            <div class = 'col-3'>
+                                <label class = 'pokeLabel'>lvl</label>
+                                <div class = 'pokeIdModal'>14</div>
+                            </div>
+                            <div class = 'col-3'>
+                                    <img src = "{{tradePokeArr[i].sprite.front_default}}">
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
                 <div class = 'col col-3'>
-                    <div class = 'pokeLabel'>Pok&eacute; Info</div>
-                    <div id = 'pokeInfo1'></div>
-                </div>
-                <div class = 'col col-3'>
-                    <select class = 'tradePokePicker-btn big-boy-btn btn'>
-                        <option value = '0' selected disabled>Select Pok&eacute;mon</option>
-                        <option value = '1'>Pikachu : 18</option>
-                        <option value = '2'>Richu : 18</option>
-                        <option value = '3'>Charizard : 18</option>
+                    <select class = 'tradePokePicker-btn big-boy-btn btn cust-offset-2' (change)='showPokeInfo($event.target.value, i)'>
+                        <option value = '0' (click)='showPokeInfo(0)' selected>Select Pok&eacute;mon</option>
+                        <option *ngFor='let pokes of currentUser.userPokeArr' [value] = 'pokes.id'>{{pokes.name}} ({{pokes.id}})</option>
                     </select>
                 </div>
             </div>
             <div class = 'row'>
                 <div class = 'col col-12'>
                     <hr>
-                </div>
-            </div>
-            <div class = 'row'>
-                <div class = 'col col-1'>
-                    <!-- <img src = "{{spriteURL}}"> -->
-                    <img src = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/132.png">
-                </div>
-                <div class = 'col col-1 offset-1'>
-                    <label class = 'pokeLabel'>lvl</label>
-                    <div class = 'pokeIdModal'>10</div>
-                    <!-- <div class = 'pokeIdModal'>{{lvl}}</div> -->
-                </div>
-                <div class = 'col col-3 rightBorder'>
-                    <label class = 'pokeLabel'>Moves</label>
-                    <div>
-                        <span>yadda</span><br>
-                        <span>yadda</span><br>
-                        <span>yadda</span><br>
-                        <span>yadda</span><br>
-                    </div>
-                    <!-- <div *ngFor='let move of moves'>
-                        <span>{{move}}</span><br>
-                    </div> -->
-                </div>
-                <div class = 'col col-3'>
-                    <div class = 'pokeLabel'>Pok&eacute; Info</div>
-                    <div id = 'pokeInfo1'></div>
-                </div>
-                <div class = 'col col-3'>
-                    <select class = 'tradePokePicker-btn big-boy-btn btn'>
-                        <option value = '0' selected disabled>Select Pok&eacute;mon</option>
-                        <option value = '1'>Pikachu : 18</option>
-                        <option value = '2'>Richu : 18</option>
-                        <option value = '3'>Charizard : 18</option>
-                    </select>
                 </div>
             </div>
         </div>

@@ -162,6 +162,8 @@ export class BackpackComponent implements OnInit {
   }
 
   refreshPokes(){
+    //this.globalPokes.empty();
+    //this.userPokeArr = [];
     this.getPokes();
   }
 

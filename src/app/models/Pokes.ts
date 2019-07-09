@@ -11,7 +11,7 @@ export interface Pokes{
     },
     name:string,
     moves:Array<Move>,
-    type: [],
+    type: string[],
     id: string
     //Array<Sprite>,
     //move:Array<Moves>,

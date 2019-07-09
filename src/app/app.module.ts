@@ -18,6 +18,7 @@ import { GlobalPokes } from './components/global/globalPokes';
 import { GlobalTeam } from './components/global/globalTeam';
 import { GlobalAllTeams } from './components/global/globalAllTeams';
 import { GlobalTrades } from './components/global/globalTrades';
+import { PokesObj } from './components/pokesObj';
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import { GlobalTrades } from './components/global/globalTrades';
   providers: [ GlobalPokes,
                GlobalTeam ,
                GlobalAllTeams,
-               GlobalTrades ],
+               GlobalTrades,
+               PokesObj ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

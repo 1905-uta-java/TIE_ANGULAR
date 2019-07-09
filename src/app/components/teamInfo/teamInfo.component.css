@@ -18,9 +18,10 @@ button{
 }
 .pokeLabel{
     /*line-height: -12px;*/
-    margin-bottom: -15px;
+    margin-bottom: 0px;
     font-size: 10pt;
     font-weight: bold;
+    display:block;
 }
 .poke-sm-head{
     /*line-height: -12px;*/
@@ -35,6 +36,15 @@ button{
 
 .ref-btn{
     margin-top: 10px;
+}
+
+.cust-offset{
+    margin-left: 15px;
+}
+
+.cust-offset-2{
+    margin-left: 35px;
+
 }
 
 .page-title{
@@ -52,6 +62,10 @@ button{
     width: 40px;
     overflow: hidden;
     left:12px;
+}
+
+select::-ms-expand {
+    display: none;
 }
 
 .user-icon{

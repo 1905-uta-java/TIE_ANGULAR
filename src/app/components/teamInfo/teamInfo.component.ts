@@ -9,6 +9,7 @@ import { Move } from '../../models/Pokes';
 import { Template } from '@angular/compiler/src/render3/r3_ast';
 import { TeammateInfo } from 'src/app/models/TeammateInfo';
 import { GlobalTeam } from 'src/app/components/global/globalTeam';
+import { PokesObj } from '../pokesObj';
 
 @Component({
   selector: 'app-teamInfo',
@@ -18,11 +19,14 @@ import { GlobalTeam } from 'src/app/components/global/globalTeam';
 export class TeamInfoComponent implements OnInit {
   modalRef : BsModalRef;
   teamName:string = "Team Name and stuff";
+  selTeammate: TeammateInfo;
+  move:Move = {move:{name:""}};
+
   //need a teammateMember object
   //need a teammates array
   userPoke:UserPokes = {id:"0", name:"", sprite:"", dateAdded:"", type:[], custName:"", moveArr:[]};
   //userPokeArr:UserPokes[] = [];
-
+  
   pokeInfoArr:PokeInfo[] = [
     {id: '25', moveArr:['1', '3', '9','17']},
     {id:'132', moveArr:['0']},
@@ -48,6 +52,32 @@ export class TeamInfoComponent implements OnInit {
     {id: '22', moveArr:['1', '36', '15', '24']}
   ];
 
+
+  userInfoPokeArr:PokeInfo[] = [
+    {id: '26', moveArr:['1', '3', '9','17']},
+    {id:'133', moveArr:['0']},
+    {id: '40', moveArr:['3', '4', '10', '11']},
+    {id: '46', moveArr:['3', '56', '10', '20']},
+    {id: '57', moveArr:['6', '52', '19', '21']},
+    {id: '83', moveArr:['1', '36', '15', '24']}
+  ];
+  userInfoPoke:UserPokes = {id:"0", name:"", sprite:"", dateAdded:"", type:[], custName:"", moveArr:[]};
+  currentUser: TeammateInfo = {username: "me", pokes: this.userInfoPokeArr, level:"44", userPokeArr: []};
+  
+  selPoke:Pokes = {sprite: {back_default: "",
+                            back_female: "",
+                            back_shiny: "",
+                            back_shiny_female: "",
+                            front_default: "",
+                            front_female: "",
+                            front_shiny: "",
+                            front_shiny_female: ""},
+                          name:"",
+                          moves:[this.move],
+                          type:[],
+                          id:""};
+
+
   teammatesArr: TeammateInfo[] = [
     {username: "theDude01", pokes: this.pokeInfoArr, level:"24", userPokeArr: [this.userPoke]},
     {username: "tankgirl", pokes: this.pokeInfoArr, level:"25",  userPokeArr: [this.userPoke]},
@@ -56,7 +86,6 @@ export class TeamInfoComponent implements OnInit {
   ];
 
   
-  move:Move = {move:{name:""}};
   pokes: Pokes = {sprite: {back_default: "",
                             back_female: "",
                             back_shiny: "",
@@ -84,8 +113,18 @@ export class TeamInfoComponent implements OnInit {
   newCounter: number = 0;
   custName: string;
   
+  tradePokeArr:Pokes[] = [{sprite: {back_default: "",back_female: "",back_shiny: "",back_shiny_female: "",front_default: "",front_female: "",front_shiny: "",front_shiny_female: ""},name:"",moves:[this.move],type:[],id:"0"},
+                          {sprite: {back_default: "",back_female: "",back_shiny: "",back_shiny_female: "",front_default: "",front_female: "",front_shiny: "",front_shiny_female: ""},name:"",moves:[this.move],type:[],id:"0"},
+                          {sprite: {back_default: "",back_female: "",back_shiny: "",back_shiny_female: "",front_default: "",front_female: "",front_shiny: "",front_shiny_female: ""},name:"",moves:[this.move],type:[],id:"0"},
+                          {sprite: {back_default: "",back_female: "",back_shiny: "",back_shiny_female: "",front_default: "",front_female: "",front_shiny: "",front_shiny_female: ""},name:"",moves:[this.move],type:[],id:"0"},
+                          {sprite: {back_default: "",back_female: "",back_shiny: "",back_shiny_female: "",front_default: "",front_female: "",front_shiny: "",front_shiny_female: ""},name:"",moves:[this.move],type:[],id:"0"},
+                          {sprite: {back_default: "",back_female: "",back_shiny: "",back_shiny_female: "",front_default: "",front_female: "",front_shiny: "",front_shiny_female: ""},name:"",moves:[this.move],type:[],id:"0"},
+                  ]; // = new Array<Pokes>(6);
 
-  constructor(private pokeService: AjaxCallService, private modalService: BsModalService, private globalTeam: GlobalTeam) { }
+  
+
+  constructor(private pokeService: AjaxCallService, private modalService: BsModalService, private globalTeam: GlobalTeam, 
+              private pokeObj: PokesObj) { }
 
   ngOnInit() {
     // server call here, that does things
@@ -117,7 +156,41 @@ export class TeamInfoComponent implements OnInit {
       }
       console.log(this.teammatesArr);
     }
+//get pokes from current user too
+  for(let j = 0; j < this.currentUser.pokes.length; j++){
+    this.pokeService.getPoke(this.currentUser.pokes[j].id).then((pokes)=>{
+      this.pokes = pokes;
+      this.userPoke.name = this.pokes.name;
+      this.userPoke.id = this.pokes.id;
+      this.userPoke.sprite = this.pokes["sprites"].front_default;
+      this.userPoke.dateAdded = this.dateAdded;
+      this.userPoke.custName = this.custName;
+      
+      if(this.currentUser.pokes[j]){
+        if(this.pokes.name === "ditto"){
+          this.userPoke.moveArr.push(pokes.moves[0].move.name);
+        } else {
+          for(let k = 0; k < this.currentUser.pokes[j].moveArr.length; k++){
+            let indx = this.currentUser.pokes[j].moveArr[k];
+            this.userPoke.moveArr.push(pokes.moves[indx].move.name);
+          }
+        }
+      }
+
+      if(this.currentUser.userPokeArr.includes(this.userPoke) === false )
+        this.currentUser.userPokeArr.push(this.userPoke); 
+      
+      
+      this.userPoke = {id:"", name:"", sprite:"", dateAdded:"", type:[], custName:"", moveArr:[]};
+       
+       
+      //this.data(this.pokes);
+    });
+    console.log(this.currentUser);
   }
+
+}
+
 
   data(pokes: Pokes, teammateIndex:number){
     let indx;
@@ -158,6 +231,65 @@ export class TeamInfoComponent implements OnInit {
       template,
       Object.assign({class: 'gray modal-lg'})
     );
+  }
+
+  showInfo(teammate: TeammateInfo){
+    console.log(teammate);
+    this.selTeammate = teammate;
+  }
+
+  showPokeInfo(id, index){
+    console.log(id);
+    let moveArrHeres:Move[] = [];
+    let typeArr:string[] = [];
+    let newPoke = new PokesObj().poke = {sprite: {back_default: "",back_female: "",back_shiny: "",back_shiny_female: "",front_default: "",front_female: "",front_shiny: "",front_shiny_female: ""},name:"",moves:[this.move],type:[],id:"0"};
+    console.log(newPoke);
+
+    if(id !== 0){
+      for(let i = 0; i < this.currentUser.userPokeArr.length; i++){
+        if(this.currentUser.userPokeArr[i].id == id){
+          newPoke.id = this.currentUser.userPokeArr[i].id;
+          
+          //ohhhh this is so bad, i'm ashamed of this
+          for (let k = 0; k < this.currentUser.userPokeArr[i].moveArr.length; k++){
+            moveArrHeres.push({move:{name: this.currentUser.userPokeArr[i].moveArr[k]}});
+          }
+          newPoke.moves = moveArrHeres;
+          newPoke.sprite.front_default = this.currentUser.userPokeArr[i].sprite;
+          newPoke.name = this.currentUser.userPokeArr[i].name;
+          
+          for(let k = 0; k < this.currentUser.userPokeArr[i].type.length; k++){
+            typeArr.push(this.currentUser.userPokeArr[i].type[k]);
+          }
+          //console.log(typeArr);
+          newPoke.type = typeArr;
+          
+          //empty things
+          typeArr = [];
+          moveArrHeres = [];
+        }
+      }
+      console.log(this.selPoke);
+      this.tradePokeArr[index] = newPoke;
+      console.log("chosen poke with name " + this.selPoke.name + " is now at in array at index " + index + ". Here's the entire array: ");
+      console.log(this.tradePokeArr);
+
+    } else {
+      console.log('yeeeee nothin');
+      this.selPoke = {sprite: {back_default: "",
+                            back_female: "",
+                            back_shiny: "",
+                            back_shiny_female: "",
+                            front_default: "",
+                            front_female: "",
+                            front_shiny: "",
+                            front_shiny_female: ""},
+                          name:"",
+                          moves:[this.move],
+                          type:[],
+                          id:"0"};
+
+    }
   }
 
 }

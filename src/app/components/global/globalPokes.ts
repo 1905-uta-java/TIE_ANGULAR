@@ -31,4 +31,8 @@ export class GlobalPokes{
     getPokesLength(){
         return this.pokes.length;
     }
+
+    empty(){
+        this.pokes = [];
+    }
 }
