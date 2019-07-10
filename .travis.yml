@@ -1,0 +1,14 @@
+language: node_js
+
+node_js:
+  - "6.9"
+
+before_script:
+  - npm install -g @angular/cli
+
+script:
+  - ng build --prod
+  - npm install sonar-scanner
+  - sonar-scanner -Dsonar.projectKey=1905-uta-java_TIE_ANGULAR 
+-Dsonar.organization=1905-uta-java 
+-Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN
