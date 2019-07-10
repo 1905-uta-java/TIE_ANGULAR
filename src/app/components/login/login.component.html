@@ -5,16 +5,16 @@
         <div class = 'row form-group'>
           <div class = 'col-lg-6 col-md-12 col-sm-12'>
             <label for = 'username'>Username</label>
-            <input type = 'text' id = 'username' class = 'form-control'>
+            <input type = 'text' [(ngModel)]='username' id = 'username' class = 'form-control'>
           </div>
           <div class = 'col-lg-6 col-md-12 col-sm-12'>
             <label for = 'password'>Password</label>
-            <input type = 'password' id = 'password'  class = 'form-control'>
+            <input type = 'password' [(ngModel)]='password' id = 'password'  class = 'form-control'>
           </div>
         </div>
         <div class = 'row justify-content-center'>
           <div class = 'col-lg-6 col-md-12'>
-            <button id = 'submit-btn' class = 'btn btn-primary'>Login</button>
+            <button id = 'submit-btn' class = 'btn btn-primary'(click)="login($event)">Login</button>
           </div>
           <div class = 'col-lg-6 col-md-12'>
             <button id = 'create-btn' class = 'btn btn-primary'>Create Account</button>

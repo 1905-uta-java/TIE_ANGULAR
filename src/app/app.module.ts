@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
+import { StorageServiceModule } from 'angular-webstorage-service';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { BackpackComponent } from './components/backpack/backpack.component';
@@ -19,6 +20,7 @@ import { GlobalTeam } from './components/global/globalTeam';
 import { GlobalAllTeams } from './components/global/globalAllTeams';
 import { GlobalTrades } from './components/global/globalTrades';
 import { PokesObj } from './components/pokesObj';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -38,7 +40,9 @@ import { PokesObj } from './components/pokesObj';
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    FormsModule,
+    StorageServiceModule
   ],
   providers: [ GlobalPokes,
                GlobalTeam ,
