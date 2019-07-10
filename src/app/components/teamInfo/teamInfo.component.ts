@@ -25,45 +25,15 @@ export class TeamInfoComponent implements OnInit {
 
   //need a teammateMember object
   //need a teammates array
-  userPoke:UserPokes = {id:"0", name:"", sprite:"", dateAdded:"", type:[], custName:"", moveArr:[]};
+  userPoke:UserPokes = {id:0, name:"", sprite:"", dateAdded:"", type:[], custName:"", moveArr:[]};
   //userPokeArr:UserPokes[] = [];
   
-  pokeInfoArr:PokeInfo[] = [
-    {id: '25', moveArr:['1', '3', '9','17']},
-    {id:'132', moveArr:['0']},
-    {id: '39', moveArr:['3', '4', '10', '11']},
-    {id: '45', moveArr:['3', '56', '10', '20']},
-    {id: '56', moveArr:['6', '52', '19', '21']},
-    {id: '82', moveArr:['1', '36', '15', '24']}
-  ];
-  pokeInfoArr2:PokeInfo[] = [
-    {id: '5', moveArr:['1', '3', '9','17']},
-    {id:'32', moveArr:['0']},
-    {id: '9', moveArr:['3', '4', '10', '11']},
-    {id: '4', moveArr:['3', '56', '10', '20']},
-    {id: '6', moveArr:['6', '52', '19', '21']},
-    {id: '2', moveArr:['1', '36', '15', '24']}
-  ];
-  pokeInfoArr3:PokeInfo[] = [
-    {id: '51', moveArr:['1', '3', '9','17']},
-    {id:'2', moveArr:['0']},
-    {id: '19', moveArr:['3', '4', '10', '11']},
-    {id: '47', moveArr:['3', '56', '10', '20']},
-    {id: '60', moveArr:['6', '52', '19', '21']},
-    {id: '22', moveArr:['1', '36', '15', '24']}
-  ];
+  pokeInfoArr:PokeInfo[] = [];
 
 
-  userInfoPokeArr:PokeInfo[] = [
-    {id: '26', moveArr:['1', '3', '9','17']},
-    {id:'133', moveArr:['0']},
-    {id: '40', moveArr:['3', '4', '10', '11']},
-    {id: '46', moveArr:['3', '56', '10', '20']},
-    {id: '57', moveArr:['6', '52', '19', '21']},
-    {id: '83', moveArr:['1', '36', '15', '24']}
-  ];
-  userInfoPoke:UserPokes = {id:"0", name:"", sprite:"", dateAdded:"", type:[], custName:"", moveArr:[]};
-  currentUser: TeammateInfo = {username: "me", pokes: this.userInfoPokeArr, level:"44", userPokeArr: []};
+  userInfoPokeArr:PokeInfo[] = [];
+  userInfoPoke:UserPokes = {id:null, name:null, sprite:null, dateAdded:null, type:null, custName:null, moveArr:null};
+  currentUser: TeammateInfo = {username: null, pokes: this.userInfoPokeArr, level:"44", userPokeArr: []};
   
   selPoke:Pokes = {sprite: {back_default: "",
                             back_female: "",
@@ -79,12 +49,7 @@ export class TeamInfoComponent implements OnInit {
                           id:""};
 
 
-  teammatesArr: TeammateInfo[] = [
-    {username: "theDude01", pokes: this.pokeInfoArr, level:"24", userPokeArr: [this.userPoke]},
-    {username: "tankgirl", pokes: this.pokeInfoArr, level:"25",  userPokeArr: [this.userPoke]},
-    {username: "leroyJenkins", pokes: this.pokeInfoArr2, level:"14",  userPokeArr: [this.userPoke]},
-    {username: "....yo idk", pokes: this.pokeInfoArr3, level:"4",  userPokeArr: [this.userPoke]}
-  ];
+  teammatesArr: TeammateInfo[] = [];
 
   
   pokes: Pokes = {sprite: {back_default: "",

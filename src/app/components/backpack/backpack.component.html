@@ -32,7 +32,7 @@
         <div class = 'pokeMoveList'> 
           <div *ngIf="userPokemon.moveArr.length > 0; else elseBlock">
             <div *ngFor='let move of userPokemon.moveArr'>
-                <span>{{move}}</span><br>
+                <span *ngIf="move">{{move}}</span><br>
             </div>
           </div>
           <ng-template #elseBlock>N/A</ng-template>
