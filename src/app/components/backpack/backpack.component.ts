@@ -11,6 +11,8 @@ import { Template } from '@angular/compiler/src/render3/r3_ast';
 import { GlobalPokes } from '../global/globalPokes';
 import { GetUserPokesService } from 'src/app/service/get-user-pokes.service';
 import { ServerTrainer } from 'src/app/service/serverTrainer';
+import { InitUserInfoService } from 'src/app/service/init-user-info.service';
+
 
 
 @Component({
@@ -37,7 +39,7 @@ export class BackpackComponent implements OnInit {
                     id:null
                   };
   pokeArr:Pokes[] = [];
-  userPoke:UserPokes = {id:0, name:"", sprite:"", dateAdded:"", type:[], custName:"", moveArr:[]};
+  userPoke:UserPokes = {id:0, name:"", sprite:"", dateAdded:null, type:[], custName:"", moveArr:[]};
   userPokeArr:UserPokes[] = [];
   
   //info we want to print on the page
@@ -72,20 +74,21 @@ export class BackpackComponent implements OnInit {
 
   ngOnInit() {
     console.log("HERE's TRISTAN's STUFF!");
+    console.log(this.globalPokes);
     
     if(this.globalPokes.getPokesLength() == 6){
       this.userPokeArr = this.globalPokes.getAllPokes();
       // console.log("Calling draw components, globalPokes is already filled");
       this.drawComponents();
     } else {
-      this.getPokes();
+      //this.initInfo;
+      //this.userPokeArr = this.globalPokes.getAllPokes();
+      this.getUserPokes();
     }
   }
-  //TODO - gotta...ya know, do DB calls so we can get the correct moves and such
-  // parses the info from AJAX
   
   
-  getPokes(){
+  getUserPokes(){
     this.getUserPokesServer.getUserPokes(52).subscribe((ret) => {
       this.serverPokemon = ret;
       console.log(this.serverPokemon);
@@ -131,7 +134,7 @@ export class BackpackComponent implements OnInit {
     this.userPoke.name = pokes.name;
     this.userPoke.id = pokes.id;
     this.userPoke.sprite = pokes["sprites"].front_default;
-    this.userPoke.dateAdded = this.dateAdded;
+    this.userPoke.dateAdded = null;
     this.userPoke.custName = this.custName;
 
     if(this.pokeInfoArr[i].move_one === "" || this.pokeInfoArr[i].move_one === null){
@@ -175,7 +178,7 @@ export class BackpackComponent implements OnInit {
     // console.log(this.userPokeArr);
 
     // empty userPoke
-    this.userPoke = {id:0, name:"", sprite:"", dateAdded:"", type:[], custName:"", moveArr:[]};
+    this.userPoke = {id:0, name:"", sprite:"", dateAdded:null, type:[], custName:"", moveArr:[]};
     
     this.drawComponents();
   }
@@ -201,7 +204,7 @@ export class BackpackComponent implements OnInit {
   refreshPokes(){
     //this.globalPokes.empty();
     //this.userPokeArr = [];
-    this.getPokes();
+    //this.getPokes();
   }
 
 
