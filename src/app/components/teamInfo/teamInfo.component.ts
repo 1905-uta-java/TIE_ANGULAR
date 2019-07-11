@@ -26,7 +26,7 @@ import { GlobalUser } from '../global/globalUser';
 })
 export class TeamInfoComponent implements OnInit {
   modalRef : BsModalRef;
-  teamName:string = "Team Name and stuff";
+  teamName:string = "";
   emptyArrUSObj: Array<UserPokes> = [];
   selTeammate: TeammateInfo = {id:null, username:null, email:null, pokes:[], level: null, team_id:null, is_lead:null, userPokeArr: []};
   move:Move = {move:{name:""}};
@@ -89,19 +89,19 @@ export class TeamInfoComponent implements OnInit {
   team:Team = {id:null, created:null, teamName:null, team_mates:null};
   userId:number;
   
-
   constructor(private pokeService: AjaxCallService, private modalService: BsModalService, private globalUser:GlobalUser, 
               private globalTeam: GlobalTeam, private pokeObj: PokesObj, private getUserPokesServer: GetUserPokesService, 
               private globalPokes: GlobalPokes) { }
 
   ngOnInit() {
     // server call here, that does things
-    if(this.globalTeam.getTeammateLength() !== 0){
+    /*if(this.globalTeam.getTeammateLength() !== 0){
       //console.log("Drawing team components. Length is: " + this.globalTeam.getTeammateLength());
       this.teammatesArr = this.globalTeam.getAllTeammates();
     } else {
       this.getPokes();
-    }
+    }*/
+    this.getPokes();
   }
 
 
@@ -110,6 +110,7 @@ export class TeamInfoComponent implements OnInit {
     this.userId = parseInt(token.substring(1, token.length).split(":")[0]);
     this.getUserPokesServer.getUserPokes(this.userId).subscribe((ret)=>{
       this.serverTrainer = ret;
+      this.teamName = this.serverTrainer.team_id.team_name;
       // console.log(this.serverTrainer);
 
       //get trainer from server. Set pokemans for him and teammates. 
@@ -232,6 +233,9 @@ export class TeamInfoComponent implements OnInit {
               //this.teammatesArr[i].userPokeArr.push(tempArr);
               
               console.log(this.teammatesArr[i].userPokeArr);
+              this.globalTeam.setTeamName(this.serverTrainer.team_id.team_name);
+              this.globalTeam.setAllTeammates(this.teammatesArr);
+              console.log(this.globalTeam);
             });
           }
         }
@@ -278,6 +282,10 @@ export class TeamInfoComponent implements OnInit {
     });
     //console.log(this.team);
     //console.log(this.teammatesArr);
+    // this.globalTeam.setTeamName(this.serverTrainer.team_id.team_name);
+    // this.globalTeam.setAllTeammates(this.teammatesArr);
+    // console.log(this.globalTeam);
+    
   }
   
   pokeTeammateData(pokes:Pokes, ti:number, pi:number){

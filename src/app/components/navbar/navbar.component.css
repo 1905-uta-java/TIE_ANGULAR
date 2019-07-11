@@ -11,6 +11,10 @@
 	position: absolute;
 }
 
+.navUsr{
+	padding-right: 20px;
+	padding-top:8px;
+}
 
 .stick-me{
 	position:fixed;
