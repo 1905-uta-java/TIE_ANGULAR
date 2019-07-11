@@ -25,12 +25,16 @@
     max-width: 700px !important;
 }
 
-#poke1:hover{
-    background-color:lightgray;
-}
-
 .poke-yellow{
     background-color: rgb(255, 191, 0);
+}
+
+[id^=poke]{
+    cursor: pointer;
+}
+[id^=poke]:hover{
+    background-color:lightgray;
+    cursor: pointer;
 }
 
 .ref-btn{

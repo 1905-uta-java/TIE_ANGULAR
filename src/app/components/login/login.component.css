@@ -1,3 +1,26 @@
 button{
     width:100% !important;
 }
+
+.warning-text{
+    color:red;
+    font-size:10pt;
+}
+
+.small-poke-warn{
+    font-size:10pt;
+    font-style: italic;
+
+}
+
+.pokeLabel{
+    /*line-height: -12px;*/
+    margin-bottom: 0px;
+    font-size: 10pt;
+    font-weight: bold;
+    display:block;
+}
+
+.margin-top-20{
+    margin-top:20px;
+}

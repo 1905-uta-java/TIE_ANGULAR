@@ -51,7 +51,7 @@ export class BackpackComponent implements OnInit {
   types:string[] = [];
   counter:number = 0
   newCounter:number = 0;
-  custName:string;
+  custName:string = "";
 
   name:string;
   id:string;
@@ -227,13 +227,17 @@ export class BackpackComponent implements OnInit {
   //TODO - implement this later. 
   setCurrData(userPokemon){
     // console.log("HIIIII!!");
-    // console.log(userPokemon);
+    console.log(userPokemon);
+
     
     this.types = userPokemon.type;
     this.spriteURL = userPokemon.sprite;
     this.pokeAge = "12";
     this.id = userPokemon.id;
     this.moves = userPokemon.moveArr;
+    this.custName = userPokemon.custName;
+
+    console.log(this.custName);
   }
 
 

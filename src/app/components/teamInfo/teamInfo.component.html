@@ -37,12 +37,12 @@
                 </div>
                 <hr class = 'dark-hr'>
                 <div class = 'row'>
-                    <div class = 'col col-2 poke-sm-head'>#</div>
+                    <div class = 'col col-2 poke-sm-head text-right'>#</div>
                     <div class = 'col col-lg-7 col-md-6 col-sm-6 col-6 poke-sm-head'>Pok&eacute;mon</div>
                     <div class = 'col col-1 poke-sm-head'>lvl</div>
                 </div>
                 <div *ngFor = 'let poke of teammate.userPokeArr; let i = index' class = 'row'>
-                    <div class = 'col col-lg-2 col-2'>
+                    <div class = 'col col-lg-2 col-2 text-right'>
                         {{i + 1}}
                     </div>
                     <div class = 'col col-lg-7 col-md-6 col-sm-6 col-6'>
@@ -65,11 +65,11 @@
 
 <ng-template #trade>
     <div class="modal-header">
-        <div class = 'row'>
-            <div class = 'col col-10'>
+        <div class = 'col-12 row'>
+            <div class = 'col'>
                 <h4 class="modal-title text-left">Trade with {{selTeammate.username}}</h4>
             </div>
-            <div class = 'col col-2'>
+            <div class = 'col col-1 float-right'>
                 <button type="button" class="close text-right" (click)="closeModal()" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -97,7 +97,7 @@
                 <div class = 'col col-2 rightBorder text-right'>
                     <label class = 'pokeLabel'>Moves</label>
                     <div *ngFor = 'let move of pokemon.moveArr'>
-                        <span>{{move}}</span><br>
+                        <span class = 'small-move'>{{move}}</span><br>
                     </div>
                 </div>
         <!-- OOOOKAY this is user's chosen poke -->
@@ -110,7 +110,7 @@
                             <div class = 'col-6'>
                                 <div class = 'pokeLabel'>Moves</div>
                                 <div *ngFor = 'let move of tradePokeArr[i].moves'>
-                                    <span>{{move.move.name}}</span><br>
+                                    <span class = 'small-move'>{{move.move.name}}</span><br>
                                 </div>
                             </div>
                             <div class = 'col-3'>
@@ -124,7 +124,7 @@
                     </div>
 
                 </div>
-                <div class = 'col col-3'>
+                <div class = 'col col-3 cust-offset-3'>
                     <select class = 'tradePokePicker-btn big-boy-btn btn cust-offset-2' (change)='showPokeInfo($event.target.value, i)'>
                         <option value = '0' (click)='showPokeInfo(0)' selected>Select Pok&eacute;mon</option>
                         <option *ngFor='let pokes of currentUser.userPokeArr' [value] = 'pokes.id'>{{pokes.name}} ({{pokes.id}})</option>
@@ -139,13 +139,13 @@
         </div>
     </div>
     <div class = 'modal-footer'>
-            <div class = 'col col-6'>
-                <button class = 'btn btn-warning'>Send Trade Request(s)</button>
-            </div>
-            <div class = 'col col-6'>
-                <button class = 'btn btn-default' (click)="closeModal()" aria-label='Close'>Canel</button>
-            </div>
+        <div class = 'col col-6'>
+            <button class = 'btn btn-warning'>Send Trade Request(s)</button>
         </div>
+        <div class = 'col col-6'>
+            <button class = 'btn btn-default' (click)="closeModal()" aria-label='Close'>Canel</button>
+        </div>
+    </div>
 </ng-template>
 
 

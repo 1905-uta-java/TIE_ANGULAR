@@ -14,12 +14,65 @@
         </div>
         <div class = 'row justify-content-center'>
           <div class = 'col-lg-6 col-md-12'>
-            <button id = 'submit-btn' class = 'btn btn-primary'(click)="login($event)">Login</button>
+            <button id = 'submit-btn' class = 'btn btn-warning'(click)="login($event)">Login</button>
           </div>
           <div class = 'col-lg-6 col-md-12'>
-            <button id = 'create-btn' class = 'btn btn-primary'>Create Account</button>
+            <button id = 'create-btn' class = 'btn btn-warning' (click)="createAcc.show()">Create Account</button>
           </div>
         </div>
       </div>
     </div>
+</div>
+<!-- [trainer_id, login, pass, email, team_id, is_lead] -->
+<div bsModal #createAcc='bs-modal' class = 'modal fade' tabindex='-1' role = 'dialog' aria-labelledby="dialog-sizes-name1">
+  <div class = 'modal-dialog modal-md'>
+    <div class = 'modal-content'>
+      <div class = 'modal-header'>
+        <div class = 'col-12 row'>
+          <div class = 'col'>
+            <h4 id='dialog-sizes-name1' class = 'modal-title pull-left'>Create Account </h4>
+          </div>
+          <div class = 'col col-1 float-right'>
+            <button type = 'button' class = 'close pull-right' (click)="createAcc.hide()" aria-label='Close'>
+              <span aria-hidden='true'>&times;</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class = 'modal-body'>
+          <div class = 'row form-group'>
+            <div class = 'col col-6'>
+              <label for ='username' class = 'pokeLabel' >Username</label>
+              <input type='text' id='username' [(ngModel)] = 'newusername' class = 'form-control'>
+            </div>
+            <div class = 'col col-6'>
+                <label for ='password' class = 'pokeLabel'>Password</label>
+                <input type='password' id='password' [(ngModel)] = 'newpassword' class = 'form-control'>
+            </div>
+            <div class = 'col col-12 margin-top-20'>
+              <label for ='email' class = 'pokeLabel'>Email</label>
+              <input type='text' id='email' [(ngModel)] = 'newemail' class = 'form-control'>
+          </div>
+        </div>
+        <div class = 'row'>
+          <div class = 'col col-12'>
+            <div class = 'small-poke-warn'> Upon account creation, user will be assigned 6 pokemon and 4 moves per poke at random</div>
+          </div>
+        </div>
+        <div class = 'row'>
+          <div class = 'col col-12'>
+              <label id='createError' class = 'warning-text'>{{createError}}</label>
+          </div>
+        </div>
+    </div>
+    <div class = 'modal-footer'>
+      <div class = 'col col-6'>
+        <button class = 'btn btn-warning' (click)='createAccount($event)' [disabled] = 'createBtnDis'>{{createDesc}}</button>
+      </div>
+      <div class = 'col col-6'>
+        <button class = 'btn btn-default' (click)='createAcc.hide()'>Cancel</button>
+      </div>
+    </div>
+  </div>
+
 </div>

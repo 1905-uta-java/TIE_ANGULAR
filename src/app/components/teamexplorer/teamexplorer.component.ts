@@ -57,7 +57,8 @@ export class TeamexplorerComponent implements OnInit {
   getTeams(){
     let token = sessionStorage.getItem('token');
     this.userId = parseInt(token.substring(1, token.length).split(":")[0]);
-    console.log(this.userId);
+    let username = token.split(":")[1];
+    console.log(this.userId + " " + username);
     this.teamService.getAllTeams(this.userId).subscribe((ret)=>{
       this.serverTeam = ret;
       console.log(this.serverTeam);

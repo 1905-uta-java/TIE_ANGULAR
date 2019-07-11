@@ -8,7 +8,7 @@ import { ServerTeam } from './serverTrainer';
 })
 export class TeamService {
 
-  url:string = 'http://ec2-3-19-77-116.us-east-2.compute.amazonaws.com:8080/poketie/Teams/';
+  url:string = 'http://ec2-3-19-77-116.us-east-2.compute.amazonaws.com:8080/poketie/Teams/list/';
   
   constructor(private http: HttpClient) { }
 
@@ -18,6 +18,6 @@ export class TeamService {
     token = token.substring(1);
     token = token.substring(0, token.length - 1);
     header = header.set('Authentication', token);
-    return this.http.post<ServerTeam>(this.url, id, {headers: header});
+    return this.http.get<ServerTeam>(this.url, {headers:header});
   }
 }

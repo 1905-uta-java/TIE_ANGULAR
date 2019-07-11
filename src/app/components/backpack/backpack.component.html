@@ -1,13 +1,16 @@
-<div class = 'container page-title'>
-  <div class = 'row'>
-      <div class = 'col col-10'>
-          <h1>Backpack</h1>
+<!-- <div class = 'bg-white page-title'> -->
+    <div class = 'container page-title'>
+      <div class = 'row'>
+          <div class = 'col col-10'>
+              <h1>Backpack</h1>
+          </div>
+          <div class = 'col col-2'>
+            <button class = 'btn btn-default ref-btn' (click)='refreshPokes()'>Refresh</button>
+          </div>
       </div>
-      <div class = 'col col-2'>
-        <button class = 'btn btn-default ref-btn' (click)='refreshPokes()'>Refresh</button>
-      </div>
-  </div>
-</div>
+    </div>
+  <!-- </div> -->
+
 <div *ngFor = 'let userPokemon of userPokeArr' id = 'poke{{userPokemon.id}}' (click)="setCurrData(userPokemon); lgModal.show()"> <!-- {{userPokeArr[i].id}} -->
   <div class = 'col-lg-10 col-md-12 offset-lg-1 offset-md-0' >
     <div  class = 'row' >
@@ -76,7 +79,7 @@
               </div>
               <div class = 'col col-lg-4 col-md-6 col-sm-12 col-12'>
                 <label for = 'pokeNewName' class = 'pokeLabel'>Name</label>
-                <input type = 'text' id = 'pokeNewName' class = 'form-control'>
+                <input type = 'text' id = 'custPokeName' [value] = 'custName' class = 'form-control'>
               </div>
               <div class = 'col col-1 offset-lg-1 offset-md-0'>
                 <label class = 'pokeLabel'>lvl</label>
@@ -105,7 +108,7 @@
                     <span>{{type}}</span><br>
                   </div>
               </div>
-              <div class = 'col col-3 col-sm-6'>
+              <div class = 'col col-3 col-lg-3 col-md-3 col-sm-6'>
                 <label class = 'pokeLabel'>Date Added</label>
                 <div>{{dateAdded}}</div>
                 </div>

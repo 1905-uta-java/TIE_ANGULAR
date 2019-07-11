@@ -4,6 +4,10 @@
     padding:15px;
 }
 
+button{
+    width:100%;
+}
+
 .all-teams{
     margin-top:20px;
 }
@@ -14,6 +18,22 @@
 
 .ref-btn{
     margin-top: 10px;
+}
+
+
+.user-icon{
+    height: 86px;
+    width: 86px;
+    padding-top:5px;
+    margin: -24px 0 0 -18px;
+}
+
+
+.sm-head{
+    /*line-height: -12px;*/
+    margin-bottom: -3px;
+    font-size: 10pt;
+    font-weight: bold;
 }
 
 .pokeLabel{

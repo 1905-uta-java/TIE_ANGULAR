@@ -1,39 +1,38 @@
-<div class = 'container'>
-    <div class = 'row'>
-        <div class = 'col col-10'>
-            <h1>Team Explorer</h1>
-        </div>
-        <div class ='col col-2'>
-            <button class = 'btn btn-default ref-btn'>Refresh</button>
+<div class = 'container page-title'>
+        <div class = 'row'>
+            <div class = 'col col-10'>
+                <h1>Team Explorer</h1>
+            </div>
+            <div class = 'col col-2'>
+                <button class = 'btn btn-default ref-btn'>Refresh</button>
+            </div>
         </div>
     </div>
-</div>
 
 <div class = 'container all-teams'>
     <div class = 'row justify-contents-center'>
-        <div class = 'col col-lg-6 col-sm-10'>
+        <div class = 'col col-lg-4 col-sm-10' *ngFor='let team of serverTeam'>
             <div class = 'team'>
                 <div class = 'row'>
-                    <div class = 'col col-10'>
-                        <div class ='team-name'>Team TIE</div> <!-- Team Name -->
+                    <div class = 'col col-8'>
+                        <div class ='team-name'>{{team.teamName}}</div> <!-- Team Name -->
                     </div>
-                    <div class = 'col col-lg-2 col-md-2 col-sm-2'>
+                    <div class = 'col col-lg-4 col-md-4 col-sm-4 text-right'>
                         <label class = 'pokeLabel'>avg lvl</label>
-                        <div class = 'team-member-lvl'>40</div>
+                        <div class = 'team-avg-lvl'>40</div>
                     </div>
                 </div>
                 <hr class = 'dark-hr'>
                 <div class = 'row'>
-                    <div class = 'col col-2 poke-sm-head'>#</div>
-                    <div class = 'col col-lg-7 col-md-6 col-sm-6 col-6 poke-sm-head'>Pok&eacute;mon</div>
-                    <div class = 'col col-1 poke-sm-head'>lvl</div>
+                    <div class = 'col col-lg-7 col-md-6 col-sm-6 col-6 sm-head offset-3'>user</div>
+                    <div class = 'col col-1 sm-head'>lvl</div>
                 </div>
-                <div class = 'row'>
+                <div class = 'row' *ngFor = 'let teammate of team.team_mates'>
                     <div class = 'col col-lg-2 col-2'>
-                        1
+                        <img *ngIf = 'teammate.pokemon[0]' class = 'user-icon' src = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{{teammate.pokemon[0].id}}.png'>
                     </div>
-                    <div class = 'col col-lg-7 col-md-6 col-sm-6 col-6'>
-                        Charizard
+                    <div class = 'col col-lg-7 col-md-6 col-sm-6 col-6 offset-1'>
+                        {{teammate.login}}
                     </div>
                     <div class = 'col col-lg-1 col-1'>
                         15
@@ -41,7 +40,7 @@
                 </div>
                 <div class = 'row'>
                     <div class = 'col-12'>
-                        <button id = 'trade-btn' class = 'btn btn-warning'>Trade</button>
+                        <button id = 'trade-btn' class = 'btn btn-warning'>View</button>
                     </div>
                 </div>
             </div>
