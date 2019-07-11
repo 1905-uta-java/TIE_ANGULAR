@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { SESSION_STORAGE, WebStorageService } from 'angular-webstorage-service';
+import { GlobalUser } from '../global/globalUser';
 
 @Component({
   selector: 'app-login',
@@ -17,6 +18,7 @@ export class LoginComponent implements OnInit {
   //TODO: insert DB API endpoint here
   url: string = "http://ec2-3-19-77-116.us-east-2.compute.amazonaws.com:8080/poketie/Login/";
   //url: string = "http://localhost:8080/poketie/Login/"
+  //private globalUser:GlobalUser = {id: null, dateCreated: null, email: null, pokeIds:null, username:null, auth:null};
 
   constructor(private route: Router, @Inject(SESSION_STORAGE) private session: WebStorageService) { }
   
@@ -28,6 +30,7 @@ export class LoginComponent implements OnInit {
     let creds = [this.username,this.password]
     var router = this.route
     var sesh = this.session
+    let globalUserAuth;
 
     if(this.username !== "" && this.password !== ""){
     var xhr = new XMLHttpRequest();
@@ -37,6 +40,7 @@ export class LoginComponent implements OnInit {
         let autho = xhr.getResponseHeader("Authentication");
         console.log("HERE IS THE AUTHO: " + autho)
         sesh.set("token", autho);
+        //return autho;
         //sessionStorage.setItem("token", autho);
         //redirect here
         console.log("THIS SHOULD BE THE AUTHO FROM SESSIONSTORAGE: "+sesh.get("token"))
@@ -53,6 +57,7 @@ export class LoginComponent implements OnInit {
     alert("Please input into the username and password fields");
   }
   }
+
 
 
 

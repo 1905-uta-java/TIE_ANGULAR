@@ -7,5 +7,4 @@ export interface PokeInfo{
     move_three:string;
     move_four:string;
     nickname:string;
-
 }

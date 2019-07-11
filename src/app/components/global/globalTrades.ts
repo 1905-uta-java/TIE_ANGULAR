@@ -76,4 +76,8 @@ export class GlobalTrades{
         }
     }
 
+    empty(){
+        this.trade = [];
+    }
+
 } //end of ... things

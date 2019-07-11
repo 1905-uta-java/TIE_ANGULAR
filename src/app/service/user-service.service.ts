@@ -3,16 +3,16 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ServerTrainer } from './serverTrainer';
 
-
 @Injectable({
   providedIn: 'root'
 })
+export class UserServiceService {
 
-export class GetUserPokesService {
   url:string = 'http://ec2-3-19-77-116.us-east-2.compute.amazonaws.com:8080/poketie/Trainers/id';
+  
   constructor(private http: HttpClient) { }
 
-  getUserPokes(id:number):Observable<ServerTrainer>{
+  getUserInfo(id:number):Observable<ServerTrainer>{
     let header = new HttpHeaders();
     let token = sessionStorage.getItem('token');
     token = token.substring(1);
@@ -22,3 +22,4 @@ export class GetUserPokesService {
     // return this.http.get(this.url);
   }
 }
+

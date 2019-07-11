@@ -21,6 +21,7 @@ import { GlobalAllTeams } from './components/global/globalAllTeams';
 import { GlobalTrades } from './components/global/globalTrades';
 import { PokesObj } from './components/pokesObj';
 import { FormsModule } from '@angular/forms';
+import { GlobalUser } from './components/global/globalUser';
 
 
 @NgModule({
@@ -46,6 +47,7 @@ import { FormsModule } from '@angular/forms';
   ],
   providers: [ GlobalPokes,
                GlobalTeam ,
+               GlobalUser ,
                GlobalAllTeams,
                GlobalTrades,
                PokesObj ],

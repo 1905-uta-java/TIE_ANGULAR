@@ -46,7 +46,7 @@ export class TeamexplorerComponent implements OnInit {
   ngOnInit() {
 
     this.teamName = "Team Name and stuff";
-    this.userPoke = {id:0, name:"", sprite:"", dateAdded:"", type:[], custName:"", moveArr:[]};
+    this.userPoke = {id:0, name:"", sprite:"", dateAdded:null, type:[], custName:"", moveArr:[]};
  
 
   this.teammatesArr = [];

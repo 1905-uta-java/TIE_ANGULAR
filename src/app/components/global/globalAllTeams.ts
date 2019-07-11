@@ -16,8 +16,8 @@ export class GlobalAllTeams{
         return this.team.length;
     }
 
-    //returns teammates of specified team
-    getTeammatesFromTeam(teamName:string){
+    //returns team_mates of specified team
+    getteam_matesFromTeam(teamName:string){
         for(let i = 0; i < this.team.length; i++)
             if(this.team[i].teamName == teamName)
                 return this.team[i];
@@ -27,16 +27,16 @@ export class GlobalAllTeams{
     //gets a single teammate from a team
     findSingleTeammate(username:string){
         for(let i = 0; i < this.team.length; i++)
-            for(let j = 0; j < this.team[i].teammates.length; j++)
-                if(this.team[i].teammates[j].username === username)
-                    return this.team[i].teammates[j];
+            for(let j = 0; j < this.team[i].team_mates.length; j++)
+                if(this.team[i].team_mates[j].username === username)
+                    return this.team[i].team_mates[j];
     }
     
     // returns entire team that teammate is apart of
     getTeammateTeam(username:string){
         for(let i = 0; i < this.team.length; i++)
-            for(let j = 0; j < this.team[i].teammates.length; j++)
-                if(this.team[i].teammates[j].username === username)
+            for(let j = 0; j < this.team[i].team_mates.length; j++)
+                if(this.team[i].team_mates[j].username === username)
                     return this.team[i];
     }
 
@@ -44,9 +44,9 @@ export class GlobalAllTeams{
     getTeammateOfTeam(username:string, teamName:String){
         for(let i = 0; i < this.team.length; i++)
             if(this.team[i].teamName === teamName)
-                for(let j = 0; j < this.team[i].teammates.length; j++)
-                    if(this.team[i].teammates[j].username == username)
-                        return this.team[i].teammates[j];
+                for(let j = 0; j < this.team[i].team_mates.length; j++)
+                    if(this.team[i].team_mates[j].username == username)
+                        return this.team[i].team_mates[j];
     }
 
 
@@ -73,9 +73,9 @@ export class GlobalAllTeams{
     addUserToTeam(user:TeammateInfo, teamName:string){
         for(let i = 0; i < this.team.length; i++)
             if(this.team[i].teamName === teamName)
-                if(this.team[i].teammates.length < 10)
-                    for(let j = 0; j < this.team[i].teammates.length; j++)
-                        this.team[i].teammates.push(user);
+                if(this.team[i].team_mates.length < 10)
+                    for(let j = 0; j < this.team[i].team_mates.length; j++)
+                        this.team[i].team_mates.push(user);
     }
 
 } //end of ... things

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { TemplateRef } from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { AjaxCallService } from 'src/app/service/ajax-call.service';
@@ -12,6 +12,10 @@ import { GlobalPokes } from '../global/globalPokes';
 import { GetUserPokesService } from 'src/app/service/get-user-pokes.service';
 import { ServerTrainer } from 'src/app/service/serverTrainer';
 import { InitUserInfoService } from 'src/app/service/init-user-info.service';
+import { Router } from '@angular/router';
+import { SESSION_STORAGE, WebStorageService } from 'angular-webstorage-service';
+import { GlobalUser } from '../global/globalUser';
+import { UserServiceService } from 'src/app/service/user-service.service';
 
 
 
@@ -22,7 +26,7 @@ import { InitUserInfoService } from 'src/app/service/init-user-info.service';
 })
 export class BackpackComponent implements OnInit {
   move:Move = {move:{name:null}};
-  userInfo:UserInfo = {id: null, login: null, is_lead:null, created:null, email:null};
+  //userInfo:UserInfo = {id: null, login: null, is_lead:null, created:null, email:null};
   modalRef : BsModalRef;
   pokes: Pokes = {sprite: {back_default: null,
                             back_female: null,
@@ -67,46 +71,50 @@ export class BackpackComponent implements OnInit {
 
   serverPokemon:ServerTrainer;
   ret:any;
-  
+  userId: number = null;
   
   constructor(private pokeService: AjaxCallService, private modalService: BsModalService,
-     private globalPokes: GlobalPokes, private getUserPokesServer: GetUserPokesService) { }
+     private globalPokes: GlobalPokes, private getUserPokesServer: GetUserPokesService,
+     private globalUser: GlobalUser, @Inject(SESSION_STORAGE) private session: WebStorageService) { }
 
   ngOnInit() {
+    let token = sessionStorage.getItem('token');
+
+    this.userId = parseInt(token.substring(1, token.length).split(":")[0]);
+    console.log(this.userId);
     console.log("HERE's TRISTAN's STUFF!");
     console.log(this.globalPokes);
     
     if(this.globalPokes.getPokesLength() == 6){
       this.userPokeArr = this.globalPokes.getAllPokes();
-      // console.log("Calling draw components, globalPokes is already filled");
+      console.log("Calling draw components, globalPokes is already filled");
       this.drawComponents();
     } else {
       //this.initInfo;
       //this.userPokeArr = this.globalPokes.getAllPokes();
+      console.log("Time to fill globalPokes");
       this.getUserPokes();
     }
   }
   
   
   getUserPokes(){
-    this.getUserPokesServer.getUserPokes(52).subscribe((ret) => {
+    this.getUserPokesServer.getUserPokes(this.userId).subscribe((ret) => {
       this.serverPokemon = ret;
       console.log(this.serverPokemon);
 
       //user info from server
-      this.userInfo.created = this.serverPokemon.created;
-      this.userInfo.email = this.serverPokemon.email;
-      this.userInfo.id = this.serverPokemon.id;
-      this.userInfo.is_lead = this.serverPokemon.is_lead;
-      this.userInfo.login = this.serverPokemon.login;
-      console.log(this.userInfo);
+      this.globalUser.dateCreated = this.serverPokemon.created;
+      this.globalUser.email = this.serverPokemon.email;
+      this.globalUser.id = this.serverPokemon.id;
+      this.globalUser.is_lead = this.serverPokemon.is_lead;
+      this.globalUser.username = this.serverPokemon.login;
+      console.log(this.globalUser);
 
       //poke info from server
       this.pokeInfoArr = this.serverPokemon.pokemon;
       console.log(this.pokeInfoArr);
-
       
-
       for(let i = 0; i < this.pokeInfoArr.length; i++){
         //console.log("Getting API info for Poke with id: " + this.pokeInfoArr[i].id + " and it's got a length of: " + this.pokeInfoArr.length);
         this.pokeService.getPoke(this.pokeInfoArr[i].pkmn_id).then((pokes)=>{

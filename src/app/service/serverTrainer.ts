@@ -5,15 +5,16 @@ export interface ServerTrainer{
     created:Date;
     login:string;
     email:string;
-    team_id:ServerTeam[];
+    team_id:ServerTeam;
     is_lead:number;
-    pokemon:ServerPokemon[];
+    pokemon:Array<ServerPokemon>;
 } //end of ... things
 
 export interface ServerTeam{
     id:number;
     created:Date;
     team_name:string;
+    team_mates:Array<ServerTrainer>;
 } //end 
 
 export interface ServerPokemon{

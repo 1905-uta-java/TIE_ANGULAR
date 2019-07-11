@@ -41,5 +41,10 @@ export class GlobalTeam{
         //check if user is admin first, then it's all good
     }
 
+    empty(){
+        this.teamName = "";
+        this.teammates = [];
+    }
+
     
 }

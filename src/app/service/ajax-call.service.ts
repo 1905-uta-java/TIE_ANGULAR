@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {Pokes} from '../models/Pokes';
 
@@ -18,9 +18,15 @@ export class AjaxCallService {
   //   //console.log(this.http.get<Pokes>(this.url+inStr));
   //   return this.http.get<Pokes>(this.url+inStr).toPromise();
   // }
-  getPoke(inStr:number): Promise<any> {
-    //console.log(this.http.get<Pokes>(this.url+inStr));
-    return this.http.get<any>(this.url+inStr).toPromise();
+  getPoke(inStr:number): Promise<Pokes> {
+    //if(inStr){
+      let headers = new HttpHeaders();
+      headers = headers.set('Authentication', sessionStorage.getItem('token'));
+      console.log(sessionStorage.getItem('token'));
+      //console.log(this.http.get<Pokes>(this.url+inStr));
+      return this.http.get<Pokes>(this.url+inStr).toPromise();
+    // }
+    // return null;
   }
   /*getPoke(inStr:number): Observable<Pokes> {
     //console.log(this.http.get<Pokes>(this.url+inStr));

@@ -16,6 +16,7 @@ import { GetUserPokesService } from 'src/app/service/get-user-pokes.service';
 import { UserInfo } from 'src/app/models/UserInfo';
 import { GlobalPokes } from '../global/globalPokes';
 import { Team } from 'src/app/models/Team';
+import { GlobalUser } from '../global/globalUser';
 
 
 @Component({
@@ -26,7 +27,8 @@ import { Team } from 'src/app/models/Team';
 export class TeamInfoComponent implements OnInit {
   modalRef : BsModalRef;
   teamName:string = "Team Name and stuff";
-  selTeammate: TeammateInfo;
+  emptyArrUSObj: Array<UserPokes> = [];
+  selTeammate: TeammateInfo = {id:null, username:null, email:null, pokes:[], level: null, team_id:null, is_lead:null, userPokeArr: []};
   move:Move = {move:{name:""}};
   
   userInfo:UserInfo = {id: null, login: null, is_lead:null, created:null, email:null};
@@ -39,7 +41,7 @@ export class TeamInfoComponent implements OnInit {
 
   userInfoPokeArr:PokeInfo[] = [];
   userInfoPoke:UserPokes = {id:null, name:null, sprite:null, dateAdded:null, type:null, custName:null, moveArr:null};
-  currentUser: TeammateInfo = {username: null, pokes: this.userInfoPokeArr, level:"44", userPokeArr: []};
+  currentUser: TeammateInfo = {id:null, username:null, email:null, pokes:null, level: null, team_id:null, is_lead:null, userPokeArr: null};
   
   selPoke:Pokes = {sprite: {back_default: "",
                             back_female: "",
@@ -58,20 +60,9 @@ export class TeamInfoComponent implements OnInit {
   teammatesArr: TeammateInfo[] = [];
 
   
-  pokes: Pokes = {sprite: {back_default: "",
-                            back_female: "",
-                            back_shiny: "",
-                            back_shiny_female: "",
-                            front_default: "",
-                            front_female: "",
-                            front_shiny: "",
-                            front_shiny_female: ""},
-                    name:"",
-                    moves:[this.move],
-                    type:[],
-                    id:null
-                  };
+  pokes: Pokes;
   pokeArr:Pokes[] = [];
+  pokeInfo:PokeInfo;//  = { id:null, created:null, pkmn_id:null, move_one:null, move_two:null,  move_three:null,move_four:null,nickname:null};
 
 
   spriteURL:string = "";
@@ -85,20 +76,34 @@ export class TeamInfoComponent implements OnInit {
   newCounter: number = 0;
   custName: string;
   
-  tradePokeArr:Pokes[] = []; // = new Array<Pokes>(6);
+  tradePokeArr:Pokes[] = [{sprite: {
+                                    back_default:null,
+                                    back_female:null,
+                                    back_shiny:null,
+                                    back_shiny_female:null,
+                                    front_default:null,
+                                    front_female:null,
+                                    front_shiny:null,
+                                    front_shiny_female:null
+                          },
+                          name:null,
+                          moves:[],
+                          type: [],
+                          id: 0}]; // = new Array<Pokes>(6);
   serverTrainer:ServerTrainer;
   userPokeArr:UserPokes[] = [];
-  team:Team = {id:null, created:null, teamName:null, teammates:null};
-
+  team:Team = {id:null, created:null, teamName:null, team_mates:null};
+  userId:number;
   
 
-  constructor(private pokeService: AjaxCallService, private modalService: BsModalService, private globalTeam: GlobalTeam, 
-              private pokeObj: PokesObj, private getUserPokesServer: GetUserPokesService, private globalPokes: GlobalPokes) { }
+  constructor(private pokeService: AjaxCallService, private modalService: BsModalService, private globalUser:GlobalUser, 
+              private globalTeam: GlobalTeam, private pokeObj: PokesObj, private getUserPokesServer: GetUserPokesService, 
+              private globalPokes: GlobalPokes) { }
 
   ngOnInit() {
     // server call here, that does things
     if(this.globalTeam.getTeammateLength() !== 0){
-      console.log("Drawing team components. Length is: " + this.globalTeam.getTeammateLength());
+      //console.log("Drawing team components. Length is: " + this.globalTeam.getTeammateLength());
       this.teammatesArr = this.globalTeam.getAllTeammates();
     } else {
       this.getPokes();
@@ -107,60 +112,126 @@ export class TeamInfoComponent implements OnInit {
 
 
   getPokes(){
-    this.getUserPokesServer.getUserPokes(52).subscribe((ret)=>{
+    let token = sessionStorage.getItem('token');
+    this.userId = parseInt(token.substring(1, token.length).split(":")[0]);
+    this.getUserPokesServer.getUserPokes(this.userId).subscribe((ret)=>{
       this.serverTrainer = ret;
-      console.log(this.serverTrainer);
+      // console.log(this.serverTrainer);
 
       //get trainer from server. Set pokemans for him and teammates. 
-      this.userInfo.created = this.serverTrainer.created;
-      this.userInfo.email = this.serverTrainer.email;
-      this.userInfo.id = this.serverTrainer.id;
-      this.userInfo.is_lead = this.serverTrainer.is_lead;
-      this.userInfo.login = this.serverTrainer.login;
-      console.log(this.userInfo);
+      this.globalUser.dateCreated = this.serverTrainer.created;
+      this.globalUser.email = this.serverTrainer.email;
+      this.globalUser.id = this.serverTrainer.id;
+      this.globalUser.is_lead = this.serverTrainer.is_lead;
+      this.globalUser.username = this.serverTrainer.login;
+      
+      
+      // console.log(this.globalUser);
 
       //poke info from server
+      console.log(this.serverTrainer.pokemon);
       this.pokeInfoArr = this.serverTrainer.pokemon;
     
       console.log(this.pokeInfoArr);
 
       
-
+      console.log("LENGTH of pokeInfoArr: " + this.pokeInfoArr.length);
       for(let i = 0; i < this.pokeInfoArr.length; i++){
         //console.log("Getting API info for Poke with id: " + this.pokeInfoArr[i].id + " and it's got a length of: " + this.pokeInfoArr.length);
-        this.pokeService.getPoke(this.pokeInfoArr[i].pkmn_id).then((pokes)=>{
-          this.pokes = pokes;
+        if(this.pokeInfoArr[i].pkmn_id){
+          this.pokeService.getPoke(this.pokeInfoArr[i].pkmn_id).then((pokes)=>{
+            this.pokes = pokes;
+            // console.log(this.pokes);
+            if(this.pokeArr.includes(this.pokes) === false)
+              this.pokeArr.push(this.pokes); // add to a global array 
+            // console.log(this.pokeArr);
+            this.pokeData(this.pokes, i);
+          });/*.catch(function(error){
+            console.log(error.error);
+          })*/
+
+        }
+      }
+      
+      console.log(this.serverTrainer);
+      // this.team = this.serverTrainer.team_id;
+      //this.selTeammate.pokes = Array<PokeInfo>();
+      let pokeInfoArrAgain: PokeInfo[] = [];
+      for(let i = 0; i< this.serverTrainer.team_id.team_mates.length; i++){
+        if( typeof this.serverTrainer.team_id.team_mates[i] === 'object'){
+          for(let j = 0; j < this.serverTrainer.team_id.team_mates[i].pokemon.length; j++){
+            this.pokeInfo = {
+              id: this.serverTrainer.team_id.team_mates[i].pokemon[j].id,
+              created:this.serverTrainer.team_id.team_mates[i].pokemon[j].created,
+              pkmn_id: this.serverTrainer.team_id.team_mates[i].pokemon[j].pkmn_id,
+              move_one: this.serverTrainer.team_id.team_mates[i].pokemon[j].move_one,
+              move_two: this.serverTrainer.team_id.team_mates[i].pokemon[j].move_two,
+              move_three: this.serverTrainer.team_id.team_mates[i].pokemon[j].move_three,
+              move_four: this.serverTrainer.team_id.team_mates[i].pokemon[j].move_four,
+              nickname: this.serverTrainer.team_id.team_mates[i].pokemon[j].nickname
+            };
+            pokeInfoArrAgain.push(this.pokeInfo);
+          }
+          console.log(pokeInfoArrAgain);
           
-          if(this.pokeArr.includes(this.pokes) === false)
-            this.pokeArr.push(this.pokes); // add to a global array 
-          console.log(this.pokeArr);
-          this.pokeData(this.pokes, i);
-        });/*.catch(function(error){
-          console.log(error.error);
-        })*/
+          this.selTeammate.email=  this.serverTrainer.team_id.team_mates[i].email;
+          this.selTeammate.id= this.serverTrainer.team_id.team_mates[i].id;
+          this.selTeammate.username= this.serverTrainer.team_id.team_mates[i].login;
+          this.selTeammate.is_lead= this.serverTrainer.team_id.team_mates[i].is_lead;
+          
+        }
+        
+        
+        
+        if(this.selTeammate.id || this.selTeammate.id === 0){
+            console.log("adding pokemon with ID: " + this.pokeInfo.id)
+            this.selTeammate.pokes = pokeInfoArrAgain;
+            pokeInfoArrAgain = [];
+            // this.selTeammate.pokes.push(this.pokeInfo);
+            console.log(this.selTeammate);
+            this.teammatesArr.push(this.selTeammate);
+          }
+      
+        this.selTeammate = {id:null, username:null, email:null, pokes:[], level: null, team_id:null, is_lead:null, userPokeArr: []};
+        this.pokeInfo = { id:null, created:null, pkmn_id:null, move_one:null, move_two:null,  move_three:null,move_four:null,nickname:null};
+        //this.teammatesArr.push(this.serverTrainer);
+      }
+      //this.currentUser.
+
+      //console.log(this.selTeammate);
+      // this.teammatesArr = this.serverTrainer.team_id.team_mates;
+      
+      //remove the user from the array so we don't mess things up
+      for(let i = 0; i < this.teammatesArr.length; i++){
+        if(typeof this.teammatesArr[i] === 'number'){
+          this.teammatesArr.splice(i, 1);
+        }
       }
 
-      //this.team = this.serverTrainer.team_id;
-      this.teammatesArr = this.serverTrainer.team_id.teammates;
-      
-      
+      console.log(this.teammatesArr);
       for(let i = 0; i < this.teammatesArr.length; i++){ //gets teammate
-        this.pokeTeammateArr = this.teammatesArr[i].pokes;
-        console.log(this.pokeTeammateArr);
-        
+        // this.pokeTeammateArr = this.teammatesArr[i].pokemon;
+        //console.log(this.pokeTeammateArr);
+        console.log(this.teammatesArr[i].pokes.length);
         for(let j = 0; j < this.teammatesArr[i].pokes.length; j++){ //gets 1 poke of current teammate
-          this.pokeService.getPoke(this.teammatesArr[i].pokes[j].id).then((pokes)=>{
-            this.pokes = pokes;
-            console.log("pushing poke: " + this.pokes.name + " with index: " + i);  
-            this.pokeTeammateData(this.pokes, i, j);
-          });
+          // console.log(this.teammatesArr[i].pokes[j]);
+          if(this.teammatesArr[i].pokes[j].id){
+            this.pokeService.getPoke(this.teammatesArr[i].pokes[j].id).then((pokes)=>{
+              this.pokes = pokes;
+              // console.log("pushing poke: " + this.pokes.name + " with index: " + i);  
+              this.pokeTeammateData(this.pokes, i, j);
+            });
+          }
         }
         if(this.pokeArr.includes(this.pokes) === false)
           this.pokeArr.push(this.pokes); // add to a global array 
-        this.counter = 0;
-        console.log("COUNTER RESET");
       }
-      console.log(this.teammatesArr);
+      this.currentUser.email = this.globalUser.email;
+      this.currentUser.id = this.globalUser.id;
+      this.currentUser.is_lead = this.globalUser.is_lead;
+      this.currentUser.username = this.globalUser.username;
+      this.currentUser.userPokeArr = this.userPokeArr;
+      console.log(this.currentUser);
 
       /*
     //get pokes from current user too
@@ -194,15 +265,19 @@ export class TeamInfoComponent implements OnInit {
 
       //now we get team data
     });
+    //console.log(this.team);
+    //console.log(this.teammatesArr);
   }
   
   pokeTeammateData(pokes:Pokes, ti:number, pi:number){
+    console.log(pokes);
     this.userPoke.name = pokes.name;
     this.userPoke.id = pokes.id;
     this.userPoke.sprite = pokes["sprites"].front_default;
     this.userPoke.dateAdded = null;
     this.userPoke.custName = this.custName;
-
+    console.log(pi);
+    console.log(this.pokeInfoArr);
     if(this.pokeInfoArr[pi].move_one === "" || this.pokeInfoArr[pi].move_one === null){
       this.userPoke.moveArr[0] = '';
     } else {
@@ -227,18 +302,25 @@ export class TeamInfoComponent implements OnInit {
       this.userPoke.moveArr[3]=pokes.moves[this.pokeInfoArr[pi].move_four].move.name;
     }
 
-    console.log(this.userPoke.moveArr);
+    // console.log(this.userPoke.moveArr);
 
     //++this.counter;
 
     for(let k = 0; k < pokes["types"].length; k++)
       this.userPoke.type.push(pokes["types"][k].type.name);      
     
-    console.log(this.userPoke.type);
+      console.log(this.teammatesArr[ti]);
+      console.log("ready to push this poke to " + this.teammatesArr[ti].username + "'s array");
+      console.log(this.userPoke);
 
-    this.userPokeArr.push(this.userPoke); 
+      this.teammatesArr[ti].userPokeArr.push(this.userPoke); 
+      //this.teammatesArr[ti].userPokeArr.push(this.userPoke);
+      console.log(this.teammatesArr);
+
+      this.userPokeArr.push(this.userPoke);
+    
     // console.log(this.userPokeArr);
-    this.globalPokes.setAllPokes(this.userPokeArr);
+    // this.globalPokes.setAllPokes(this.userPokeArr);
     // console.log(this.globalPokes.getAllPokes());
     // console.log("With length: " + this.globalPokes.getPokesLength());
     // console.log(this.userPokeArr);
@@ -278,14 +360,14 @@ export class TeamInfoComponent implements OnInit {
       this.userPoke.moveArr[3]=pokes.moves[this.pokeInfoArr[i].move_four].move.name;
     }
 
-    console.log(this.userPoke.moveArr);
+    // console.log(this.userPoke.moveArr);
 
     //++this.counter;
 
     for(let k = 0; k < pokes["types"].length; k++)
       this.userPoke.type.push(pokes["types"][k].type.name);      
     
-    console.log(this.userPoke.type);
+    // console.log(this.userPoke.type);
 
     this.userPokeArr.push(this.userPoke); 
     // console.log(this.userPokeArr);
@@ -297,6 +379,7 @@ export class TeamInfoComponent implements OnInit {
     // empty userPoke
     this.userPoke = {id:0, name:"", sprite:"", dateAdded:null, type:[], custName:"", moveArr:[]};
   }
+
 
 
       // for(let i = 0; i < this.teammatesArr.length; i++){ //gets teammate
@@ -366,12 +449,13 @@ export class TeamInfoComponent implements OnInit {
     if(this.teammatesArr[teammateIndex].pokes[this.counter]){
       if(this.pokes.name === "ditto"){
         this.userPoke.moveArr.push(pokes.moves[0].move.name);
-      } else {
-        for(let k = 0; k < this.teammatesArr[teammateIndex].pokes[this.counter].moveArr.length; k++){
-          let indx = this.teammatesArr[teammateIndex].pokes[this.counter].moveArr[k];
-          this.userPoke.moveArr.push(pokes.moves[indx].move.name);
-        }
-      }
+      // } else {
+      //   for(let k = 0; k < this.teammatesArr[teammateIndex].pokes[this.counter].moveArr.length; k++){
+      //     let indx = this.teammatesArr[teammateIndex].pokes[this.counter].moveArr[k];
+      //     this.userPoke.moveArr.push(pokes.moves[indx].move.name);
+      //   }
+      // }
+    }
     }
 
     ++this.counter;
@@ -410,8 +494,8 @@ export class TeamInfoComponent implements OnInit {
   }
 
   showInfo(teammate: TeammateInfo){
-    console.log(teammate);
     this.selTeammate = teammate;
+    console.log(this.selTeammate);
   }
 
   showPokeInfo(id:number, index:number){
