@@ -62,6 +62,7 @@ export class TeamInfoComponent implements OnInit {
   
   pokes: Pokes;
   pokeArr:Pokes[] = [];
+  pokeTempArr:PokeInfo[] = [];
   pokeInfo:PokeInfo;//  = { id:null, created:null, pkmn_id:null, move_one:null, move_two:null,  move_three:null,move_four:null,nickname:null};
 
 
@@ -76,20 +77,13 @@ export class TeamInfoComponent implements OnInit {
   newCounter: number = 0;
   custName: string;
   
-  tradePokeArr:Pokes[] = [{sprite: {
-                                    back_default:null,
-                                    back_female:null,
-                                    back_shiny:null,
-                                    back_shiny_female:null,
-                                    front_default:null,
-                                    front_female:null,
-                                    front_shiny:null,
-                                    front_shiny_female:null
-                          },
-                          name:null,
-                          moves:[],
-                          type: [],
-                          id: 0}]; // = new Array<Pokes>(6);
+  tradePokeArr:Pokes[] = [{sprite: {back_default:null,back_female:null, back_shiny:null, back_shiny_female:null, front_default:null, front_female:null, front_shiny:null, front_shiny_female:null},name:null,moves:[],type: [],id: 0},
+                          {sprite: {back_default:null,back_female:null, back_shiny:null, back_shiny_female:null, front_default:null, front_female:null, front_shiny:null, front_shiny_female:null},name:null,moves:[],type: [],id: 0},
+                          {sprite: {back_default:null,back_female:null, back_shiny:null, back_shiny_female:null, front_default:null, front_female:null, front_shiny:null, front_shiny_female:null},name:null,moves:[],type: [],id: 0},
+                          {sprite: {back_default:null,back_female:null, back_shiny:null, back_shiny_female:null, front_default:null, front_female:null, front_shiny:null, front_shiny_female:null},name:null,moves:[],type: [],id: 0},
+                          {sprite: {back_default:null,back_female:null, back_shiny:null, back_shiny_female:null, front_default:null, front_female:null, front_shiny:null, front_shiny_female:null},name:null,moves:[],type: [],id: 0},
+                          {sprite: {back_default:null,back_female:null, back_shiny:null, back_shiny_female:null, front_default:null, front_female:null, front_shiny:null, front_shiny_female:null},name:null,moves:[],type: [],id: 0}]; // = new Array<Pokes>(6);
+  
   serverTrainer:ServerTrainer;
   userPokeArr:UserPokes[] = [];
   team:Team = {id:null, created:null, teamName:null, team_mates:null};
@@ -139,9 +133,10 @@ export class TeamInfoComponent implements OnInit {
       for(let i = 0; i < this.pokeInfoArr.length; i++){
         //console.log("Getting API info for Poke with id: " + this.pokeInfoArr[i].id + " and it's got a length of: " + this.pokeInfoArr.length);
         if(this.pokeInfoArr[i].pkmn_id){
-          this.pokeService.getPoke(this.pokeInfoArr[i].pkmn_id).then((pokes)=>{
+          this.pokeService.getPoke(this.pokeInfoArr[i].pkmn_id).subscribe((pokes)=>{
+          // this.pokeService.getPoke(this.pokeInfoArr[i].pkmn_id).then((pokes)=>{
             this.pokes = pokes;
-            // console.log(this.pokes);
+            console.log(this.pokes);
             if(this.pokeArr.includes(this.pokes) === false)
               this.pokeArr.push(this.pokes); // add to a global array 
             // console.log(this.pokeArr);
@@ -209,23 +204,39 @@ export class TeamInfoComponent implements OnInit {
       }
 
       console.log(this.teammatesArr);
+      let tempArr:any;
+      //this.pokeInfoArr = [];
       for(let i = 0; i < this.teammatesArr.length; i++){ //gets teammate
         // this.pokeTeammateArr = this.teammatesArr[i].pokemon;
         //console.log(this.pokeTeammateArr);
-        console.log(this.teammatesArr[i].pokes.length);
+        console.log(this.teammatesArr[i].pokes.length + " " + this.teammatesArr[i].username);
         for(let j = 0; j < this.teammatesArr[i].pokes.length; j++){ //gets 1 poke of current teammate
-          // console.log(this.teammatesArr[i].pokes[j]);
+          //console.log(this.teammatesArr[i].pokes[j]);
           if(this.teammatesArr[i].pokes[j].id){
-            this.pokeService.getPoke(this.teammatesArr[i].pokes[j].id).then((pokes)=>{
+            console.log("HERE WE AAAARE!");
+            
+            this.pokeService.getPoke(this.teammatesArr[i].pokes[j].id).subscribe((pokes)=>{
+              this.pokeTempArr.push(this.teammatesArr[i].pokes[j]);
+            
+              // this.pokeService.getPoke(this.teammatesArr[i].pokes[j].id).then((pokes)=>{
               this.pokes = pokes;
+            
+              //if(this.pokeTempArr.includes(this.pokes) === false)
+                //this.pokeTempArr.push(this.pokes); // add to a global array 
               // console.log("pushing poke: " + this.pokes.name + " with index: " + i);  
+              
+              //tempArr = this.pokeTeammateData(this.pokes, i, j);
               this.pokeTeammateData(this.pokes, i, j);
+              console.log(tempArr);
+              
+              //this.teammatesArr[i].userPokeArr.push(tempArr);
+              
+              console.log(this.teammatesArr[i].userPokeArr);
             });
           }
         }
-        if(this.pokeArr.includes(this.pokes) === false)
-          this.pokeArr.push(this.pokes); // add to a global array 
       }
+      console.log(this.teammatesArr);
       this.currentUser.email = this.globalUser.email;
       this.currentUser.id = this.globalUser.id;
       this.currentUser.is_lead = this.globalUser.is_lead;
@@ -277,31 +288,32 @@ export class TeamInfoComponent implements OnInit {
     this.userPoke.dateAdded = null;
     this.userPoke.custName = this.custName;
     console.log(pi);
-    console.log(this.pokeInfoArr);
-    if(this.pokeInfoArr[pi].move_one === "" || this.pokeInfoArr[pi].move_one === null){
+    // console.log(this.pokeInfoArr);
+    console.log(this.pokeTempArr);
+    if(this.pokeTempArr[pi].move_one === "" || this.pokeTempArr[pi].move_one === null){
       this.userPoke.moveArr[0] = '';
     } else {
-      this.userPoke.moveArr[0]=pokes.moves[this.pokeInfoArr[pi].move_one].move.name;
+      this.userPoke.moveArr[0]=pokes.moves[this.pokeTempArr[pi].move_one].move.name;
     }
 
-    if(this.pokeInfoArr[pi].move_two === "" || this.pokeInfoArr[pi].move_two === null){
+    if(this.pokeTempArr[pi].move_two === "" || this.pokeTempArr[pi].move_two === null){
       this.userPoke.moveArr[1]= '';
     } else {
-      this.userPoke.moveArr[1]=pokes.moves[this.pokeInfoArr[pi].move_two].move.name;
+      this.userPoke.moveArr[1]=pokes.moves[this.pokeTempArr[pi].move_two].move.name;
     }
 
-    if(this.pokeInfoArr[pi].move_three === "" || this.pokeInfoArr[pi].move_three === null){
+    if(this.pokeTempArr[pi].move_three === "" || this.pokeTempArr[pi].move_three === null){
       this.userPoke.moveArr[2]= '';
     } else {
-      this.userPoke.moveArr[2]=pokes.moves[this.pokeInfoArr[pi].move_three].move.name;
+      this.userPoke.moveArr[2]=pokes.moves[this.pokeTempArr[pi].move_three].move.name;
     }
 
-    if(this.pokeInfoArr[pi].move_four === "" || this.pokeInfoArr[pi].move_four === null){
+    if(this.pokeTempArr[pi].move_four === "" || this.pokeTempArr[pi].move_four === null){
       this.userPoke.moveArr[3]= '';
     } else {
-      this.userPoke.moveArr[3]=pokes.moves[this.pokeInfoArr[pi].move_four].move.name;
+      this.userPoke.moveArr[3]=pokes.moves[this.pokeTempArr[pi].move_four].move.name;
     }
-
+    
     // console.log(this.userPoke.moveArr);
 
     //++this.counter;
@@ -313,11 +325,14 @@ export class TeamInfoComponent implements OnInit {
       console.log("ready to push this poke to " + this.teammatesArr[ti].username + "'s array");
       console.log(this.userPoke);
 
+      // this.teammatesArr[teammateIndex].userPokeArr.push(this.userPoke); 
+
       this.teammatesArr[ti].userPokeArr.push(this.userPoke); 
       //this.teammatesArr[ti].userPokeArr.push(this.userPoke);
       console.log(this.teammatesArr);
 
-      this.userPokeArr.push(this.userPoke);
+      //return this.userPoke;
+      // this.userPokeArr.push(this.userPoke);
     
     // console.log(this.userPokeArr);
     // this.globalPokes.setAllPokes(this.userPokeArr);
@@ -484,15 +499,14 @@ export class TeamInfoComponent implements OnInit {
   }
 
   emptyTradeArr(){
-    this.tradePokeArr = [{sprite: {back_default: "",back_female: "",back_shiny: "",back_shiny_female: "",front_default: "",front_female: "",front_shiny: "",front_shiny_female: ""},name:"",moves:[this.move],type:[],id:null},
-                            {sprite: {back_default: "",back_female: "",back_shiny: "",back_shiny_female: "",front_default: "",front_female: "",front_shiny: "",front_shiny_female: ""},name:"",moves:[this.move],type:[],id:null},
-                            {sprite: {back_default: "",back_female: "",back_shiny: "",back_shiny_female: "",front_default: "",front_female: "",front_shiny: "",front_shiny_female: ""},name:"",moves:[this.move],type:[],id:null},
-                            {sprite: {back_default: "",back_female: "",back_shiny: "",back_shiny_female: "",front_default: "",front_female: "",front_shiny: "",front_shiny_female: ""},name:"",moves:[this.move],type:[],id:null},
-                            {sprite: {back_default: "",back_female: "",back_shiny: "",back_shiny_female: "",front_default: "",front_female: "",front_shiny: "",front_shiny_female: ""},name:"",moves:[this.move],type:[],id:null},
-                            {sprite: {back_default: "",back_female: "",back_shiny: "",back_shiny_female: "",front_default: "",front_female: "",front_shiny: "",front_shiny_female: ""},name:"",moves:[this.move],type:[],id:null},
-                        ]; // = new Array<Pokes>(6);
+    this.tradePokeArr = [
+      {sprite: {back_default:null,back_female:null, back_shiny:null, back_shiny_female:null, front_default:null, front_female:null, front_shiny:null, front_shiny_female:null},name:null,moves:[],type: [],id: 0},
+      {sprite: {back_default:null,back_female:null, back_shiny:null, back_shiny_female:null, front_default:null, front_female:null, front_shiny:null, front_shiny_female:null},name:null,moves:[],type: [],id: 0},
+      {sprite: {back_default:null,back_female:null, back_shiny:null, back_shiny_female:null, front_default:null, front_female:null, front_shiny:null, front_shiny_female:null},name:null,moves:[],type: [],id: 0},
+      {sprite: {back_default:null,back_female:null, back_shiny:null, back_shiny_female:null, front_default:null, front_female:null, front_shiny:null, front_shiny_female:null},name:null,moves:[],type: [],id: 0},
+      {sprite: {back_default:null,back_female:null, back_shiny:null, back_shiny_female:null, front_default:null, front_female:null, front_shiny:null, front_shiny_female:null},name:null,moves:[],type: [],id: 0},
+      {sprite: {back_default:null,back_female:null, back_shiny:null, back_shiny_female:null, front_default:null, front_female:null, front_shiny:null, front_shiny_female:null},name:null,moves:[],type: [],id: 0}]; // = new Array<Pokes>(6);
   }
-
   showInfo(teammate: TeammateInfo){
     this.selTeammate = teammate;
     console.log(this.selTeammate);
@@ -530,7 +544,11 @@ export class TeamInfoComponent implements OnInit {
         }
       }
       console.log(this.selPoke);
-      this.tradePokeArr[index] = newPoke;
+      this.tradePokeArr[index] = {id: newPoke.id,
+                                moves: newPoke.moves,
+                                name: newPoke.name,
+                                sprite: newPoke.sprite,
+                                type: newPoke.type};
       console.log("chosen poke with name " + this.selPoke.name + " is now at in array at index " + index + ". Here's the entire array: ");
       console.log(this.tradePokeArr);
 

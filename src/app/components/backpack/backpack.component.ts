@@ -11,7 +11,6 @@ import { Template } from '@angular/compiler/src/render3/r3_ast';
 import { GlobalPokes } from '../global/globalPokes';
 import { GetUserPokesService } from 'src/app/service/get-user-pokes.service';
 import { ServerTrainer } from 'src/app/service/serverTrainer';
-import { InitUserInfoService } from 'src/app/service/init-user-info.service';
 import { Router } from '@angular/router';
 import { SESSION_STORAGE, WebStorageService } from 'angular-webstorage-service';
 import { GlobalUser } from '../global/globalUser';
@@ -117,7 +116,8 @@ export class BackpackComponent implements OnInit {
       
       for(let i = 0; i < this.pokeInfoArr.length; i++){
         //console.log("Getting API info for Poke with id: " + this.pokeInfoArr[i].id + " and it's got a length of: " + this.pokeInfoArr.length);
-        this.pokeService.getPoke(this.pokeInfoArr[i].pkmn_id).then((pokes)=>{
+        // this.pokeService.getPoke(this.pokeInfoArr[i].pkmn_id).then((pokes)=>{
+        this.pokeService.getPoke(this.pokeInfoArr[i].pkmn_id).subscribe((pokes)=>{
           this.pokes = pokes;
           
           if(this.pokeArr.includes(this.pokes) === false)

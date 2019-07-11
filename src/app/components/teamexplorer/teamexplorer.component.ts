@@ -7,6 +7,8 @@ import { PokeInfo } from 'src/app/models/PokeInfo';
 import { TeammateInfo } from 'src/app/models/TeammateInfo';
 import { GlobalAllTeams } from 'src/app/components/global/globalAllTeams';
 import { AjaxCallService } from 'src/app/service/ajax-call.service';
+import { TeamService } from 'src/app/service/team.service';
+import { ServerTeam } from 'src/app/service/serverTrainer';
 
 
 @Component({
@@ -41,56 +43,27 @@ export class TeamexplorerComponent implements OnInit {
   team: Team;
   allTeams: Team[];
 
-  constructor(private pokeService: AjaxCallService , private globalAllTeams:GlobalAllTeams) {  }
+  userId:number = 0;
+  serverTeam:ServerTeam;
+
+  constructor(private pokeService: AjaxCallService , 
+              private globalAllTeams:GlobalAllTeams,
+              private teamService: TeamService) {  }
 
   ngOnInit() {
-
-    this.teamName = "Team Name and stuff";
-    this.userPoke = {id:0, name:"", sprite:"", dateAdded:null, type:[], custName:"", moveArr:[]};
- 
-
-  this.teammatesArr = [];
-
- 
- this.move = {move:{name:""}};
- this.pokes= {sprite: {back_default: "",
-                           back_female: "",
-                           back_shiny: "",
-                           back_shiny_female: "",
-                           front_default: "",
-                           front_female: "",
-                           front_shiny: "",
-                           front_shiny_female: ""},
-                   name:"",
-                   moves:[this.move],
-                   type:[],
-                   id:0
-                 };
-  this.pokeArr = [];
-
-  this.allTeams = [];
-
-                 
-  this.getAllTeams();
-
+    this.getTeams();
   }
 
-  getAllTeams(){
-    if(this.globalAllTeams.getAllTeamLength() !== 0){
-      console.log('just do things');
-      this.globalAllTeams.setAllTeams(this.allTeams);
-    } else {
-      for(let i = 0; i < this.teammatesArr.length; i++){ //gets teammate
-        for(let j = 0; j < this.teammatesArr[i].pokes.length; j++){ //gets 1 poke of current teammate
-          this.pokeService.getPoke(this.teammatesArr[i].pokes[j].id).then((pokes)=>{
-            console.log("");
-            this.pokes = pokes;
-            this.data(this.pokes);
-          });
-        }
-      }
-    }
-  }
+  getTeams(){
+    let token = sessionStorage.getItem('token');
+    this.userId = parseInt(token.substring(1, token.length).split(":")[0]);
+    console.log(this.userId);
+    this.teamService.getAllTeams(this.userId).subscribe((ret)=>{
+      this.serverTeam = ret;
+      console.log(this.serverTeam);
+    });  
+  
+}
 
   data(poke:Pokes){
     
