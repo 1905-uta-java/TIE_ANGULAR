@@ -18,8 +18,9 @@ export class NavbarComponent implements OnInit {
   constructor(private route: Router, @Inject(SESSION_STORAGE) private session: WebStorageService,
               private globalPokes: GlobalPokes, private globalTeam: GlobalTeam, 
               private globalTrades: GlobalTrades, private globalUser: GlobalUser) { }
-
+  username:string;
   ngOnInit() {
+    this.username = this.globalUser.username;
   }
 
   logout(){
