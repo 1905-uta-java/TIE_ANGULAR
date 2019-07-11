@@ -3,11 +3,12 @@
     <div class = 'col-lg-8 col-md-10 col-sm-12 offset-lg-2 offset-md-1 offset-sm-0'>
         <h1>Login</h1>
         <div class = 'row form-group'>
-          <div class = 'col-lg-6 col-md-12 col-sm-12'>
+          <div class = 'col-lg-6 col-md-12 col-sm-12' [ngStyle]="{'color': badInput ? 'red' : 'black'}">
+            <p *ngIf='show'>Invalid username or password combination!</p>
             <label for = 'username'>Username</label>
-            <input type = 'text' [(ngModel)]='username' id = 'username' class = 'form-control'>
+            <input type = 'text' [(ngModel)]='username' id = 'username' class = 'form-control' (keydown)='showShow()'>
           </div>
-          <div class = 'col-lg-6 col-md-12 col-sm-12'>
+          <div class = 'col-lg-6 col-md-12 col-sm-12' [ngStyle]="{'color': badInput ? 'red' : 'black'}">
             <label for = 'password'>Password</label>
             <input type = 'password' [(ngModel)]='password' id = 'password'  class = 'form-control'>
           </div>

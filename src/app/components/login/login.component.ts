@@ -12,7 +12,8 @@ export class LoginComponent implements OnInit {
   username: string = "";
   password: string = "";
 
-
+  show: boolean = false;
+  badInput: boolean = false;
 
   //TODO: insert DB API endpoint here
   url: string = "http://ec2-3-19-77-116.us-east-2.compute.amazonaws.com:8080/poketie/Login/";
@@ -24,37 +25,57 @@ export class LoginComponent implements OnInit {
   }
 
   login(event){
-
     let creds = [this.username,this.password]
     var router = this.route
     var sesh = this.session
 
     if(this.username !== "" && this.password !== ""){
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", this.url);
-    xhr.onreadystatechange = function (){
-      if(this.readyState === 4 && this.status===200){
-        let autho = xhr.getResponseHeader("Authentication");
-        console.log("HERE IS THE AUTHO: " + autho)
-        sesh.set("token", autho);
-        //sessionStorage.setItem("token", autho);
-        //redirect here
-        console.log("THIS SHOULD BE THE AUTHO FROM SESSIONSTORAGE: "+sesh.get("token"))
-        router.navigate(['/backpack'])
-      } else if(this.readyState === 4 && this.status === 403){
-        alert("Invalid username or password")
-      }
-    }
+    xhr.open("POST", this.url, false);
     xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.setRequestHeader('Access-Control-Allow-Origin', router.url)
+
+    // xhr.onreadystatechange = function (){
+    //   if(this.readyState === 4 && this.status===200){
+    //     let autho = xhr.getResponseHeader("Authentication");
+    //     console.log("HERE IS THE AUTHO: " + autho)
+    //     sesh.set("token", autho);
+    //     //sessionStorage.setItem("token", autho);
+    //     //redirect here
+    //     console.log("THIS SHOULD BE THE AUTHO FROM SESSIONSTORAGE: "+sesh.get("token"))
+    //     router.navigate(['/backpack'])
+    //   } else if(this.readyState === 4 && this.status === 403){
+    //     alert("Invalid username or password")
+    //   }
+    // }
     xhr.send(JSON.stringify(creds));
+    if(xhr.status === 200){
+      let autho = xhr.getResponseHeader("Authentication");
+      sesh.set("token", autho);
+      //redirect here
+
+      router.navigate(['/backpack']);
+    } else if(xhr.status === 403){
+      this.changeFields();
+    }
+
   } else {
     console.log("User tried inputting blank fields...");
-    alert("Please input into the username and password fields");
+    this.changeFields();
   }
   }
 
+  changeFields(){
+    // alert("Invalid input!")
+    if(!this.badInput){
+    this.badInput = !this.badInput;}
+    this.show = !this.show;
+  }
 
+  showShow(){
+    if(this.show){
+      this.show = !this.show
+    }
+  }
 
 
 
