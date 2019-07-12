@@ -17,6 +17,7 @@ import { UserInfo } from 'src/app/models/UserInfo';
 import { GlobalPokes } from '../global/globalPokes';
 import { Team } from 'src/app/models/Team';
 import { GlobalUser } from '../global/globalUser';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 
 @Component({
@@ -91,7 +92,7 @@ export class TeamInfoComponent implements OnInit {
   
   constructor(private pokeService: AjaxCallService, private modalService: BsModalService, private globalUser:GlobalUser, 
               private globalTeam: GlobalTeam, private pokeObj: PokesObj, private getUserPokesServer: GetUserPokesService, 
-              private globalPokes: GlobalPokes) { }
+              private globalPokes: GlobalPokes, private http: HttpClient) { }
 
   ngOnInit() {
     // server call here, that does things
@@ -575,6 +576,31 @@ export class TeamInfoComponent implements OnInit {
                           type:[],
                           id:null};
 
+    }
+  }
+
+  sendTradeRequest(){
+    let response;
+    console.log(this.tradePokeArr);
+    let token = sessionStorage.getItem('token');
+    let headers = new HttpHeaders();
+    token = token.substring(1,token.length-1);
+    headers = headers.set('Authentication', token);
+    let tradeAIndexes = [];
+    let tradeBIndexes = [];
+    for(let i = 0; i < this.tradePokeArr.length; i++){
+      if(this.tradePokeArr[i].id !== 0){
+        tradeAIndexes.push(i);
+        tradeBIndexes.push(i);
+      }
+    }
+
+    for(let j = 0; j < tradeAIndexes.length; j++){
+      console.log("Trading " + this.tradePokeArr[tradeAIndexes[j]].name + " with id: " + this.tradePokeArr[tradeAIndexes[j]].id +" with " + this.selTeammate.userPokeArr[tradeBIndexes[j]].name + " and id: " + this.selTeammate.userPokeArr[tradeBIndexes[j]].id );
+      response = ["0",this.tradePokeArr[tradeAIndexes[j]].id, this.selTeammate.userPokeArr[tradeBIndexes[j]].id];
+      this.http.post<any>('http://ec2-3-19-77-116.us-east-2.compute.amazonaws.com:8080/poketie/Trades/new', response, {headers:headers}).subscribe((ret)=>{
+         console.log(ret);
+      });
     }
   }
 

@@ -12,6 +12,11 @@ export class RequestsComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    this.getRequests();
+  }
+
+  getRequests(){
+
   }
 
   showDownArrow(){

@@ -202,19 +202,7 @@ serverTrainer:ServerTrainer;
 
   }
 
-  //[pk_id, pkmn_id, nickname, trainer_id, move1, move2, move3, move4]
-    //pk_id req, set to 0
-    //[0, pkmn_id, "", trainer_id, move1, move2, move3, move4]
-  // sendPokes(trainer_id, pokeObjArr:MyPokeObj[]){
-    
-  // }
-
-
-
-
-
-
-}
+ }
 
 
 export class MyPokeObj{

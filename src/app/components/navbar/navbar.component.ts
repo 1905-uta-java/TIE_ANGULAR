@@ -27,16 +27,14 @@ export class NavbarComponent implements OnInit {
     //this.globalLogout.logout();
     console.log("Hope you didn't need anything else, it's gone now");
     this.globalPokes.empty();
-    console.log(this.globalPokes);
     this.globalTeam.empty();
-    console.log(this.globalTeam);
     this.globalTrades.empty();
-    console.log(this.globalTrades);
     this.globalUser.empty();
-    console.log(this.globalUser);
-
+    // console.log(this.globalPokes);
+    // console.log(this.globalTeam);
+    // console.log(this.globalTrades);
+    // console.log(this.globalUser);
     
-
     this.session.remove("token") 
     console.log("Nonexisting sessiontoken: " + this.session.get("token"))
   }

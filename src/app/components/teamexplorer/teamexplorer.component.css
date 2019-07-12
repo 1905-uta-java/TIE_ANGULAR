@@ -16,10 +16,23 @@ button{
     font-size: 19pt;
 }
 
+
+
+
 .ref-btn{
     margin-top: 10px;
 }
 
+.info-label{
+    font-style:italic;
+    font-size: 10pt;
+}
+
+
+.gray-back{
+    background-color: gray;
+    border-right: 1px solid green;
+}
 
 .user-icon{
     height: 86px;
@@ -42,6 +55,19 @@ button{
     font-size: 10pt;
     font-weight: bold;
     display:block;
+}
+
+.border-bottom{
+    border-bottom: 1px solid lightgray;
+}
+.stick-username{
+    position:sticky !important;
+    top:0px;
+    background-color: white;
+    font-size: 14pt;
+    font-weight: bold;
+    z-index:100;
+    margin-bottom: 10px;
 }
 
 .page-title{
