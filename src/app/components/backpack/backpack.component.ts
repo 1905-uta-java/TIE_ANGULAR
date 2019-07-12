@@ -1,13 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { TemplateRef } from '@angular/core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { AjaxCallService } from 'src/app/service/ajax-call.service';
 import { Pokes } from '../../models/Pokes';
 import { PokeInfo } from '../../models/PokeInfo';
 import { UserPokes } from '../../models/UserPokes';
+import { UserInfo } from '../../models/UserInfo';
 import { Move } from '../../models/Pokes';
 import { Template } from '@angular/compiler/src/render3/r3_ast';
 import { GlobalPokes } from '../global/globalPokes';
+import { GetUserPokesService } from 'src/app/service/get-user-pokes.service';
+import { ServerTrainer } from 'src/app/service/serverTrainer';
+import { Router } from '@angular/router';
+import { SESSION_STORAGE, WebStorageService } from 'angular-webstorage-service';
+import { GlobalUser } from '../global/globalUser';
+import { UserServiceService } from 'src/app/service/user-service.service';
+
+
 
 @Component({
   selector: 'app-backpack',
@@ -15,39 +24,34 @@ import { GlobalPokes } from '../global/globalPokes';
   styleUrls: ['./backpack.component.css']
 })
 export class BackpackComponent implements OnInit {
-  move:Move = {move:{name:""}};
+  move:Move = {move:{name:null}};
+  //userInfo:UserInfo = {id: null, login: null, is_lead:null, created:null, email:null};
   modalRef : BsModalRef;
-  pokes: Pokes = {sprite: {back_default: "",
-                            back_female: "",
-                            back_shiny: "",
-                            back_shiny_female: "",
-                            front_default: "",
-                            front_female: "",
-                            front_shiny: "",
-                            front_shiny_female: ""},
-                    name:"",
+  pokes: Pokes = {sprite: {back_default: null,
+                            back_female: null,
+                            back_shiny: null,
+                            back_shiny_female: null,
+                            front_default: null,
+                            front_female: null,
+                            front_shiny: null,
+                            front_shiny_female: null},
+                    name:null,
                     moves:[this.move],
-                    type:[],
-                    id:""
+                    //moves:null,
+                    type:null,
+                    id:null
                   };
   pokeArr:Pokes[] = [];
-  userPoke:UserPokes = {id:"0", name:"", sprite:"", dateAdded:"", type:[], custName:"", moveArr:[]};
+  userPoke:UserPokes = {id:0, name:"", sprite:"", dateAdded:null, type:[], custName:"", moveArr:[]};
   userPokeArr:UserPokes[] = [];
   
   //info we want to print on the page
-  pokeInfoArr:PokeInfo[] = [
-                            {id: '25', moveArr:['1', '3', '9','17']},
-                            {id:'132', moveArr:['0']},
-                            {id: '39', moveArr:['3', '4', '10', '11']},
-                            {id: '45', moveArr:['3', '56', '10', '20']},
-                            {id: '56', moveArr:['6', '52', '19', '21']},
-                            {id: '82', moveArr:['1', '36', '15', '24']}
-                          ];
-  moves:string[] = [];
+  pokeInfoArr:PokeInfo[] = [];
+  moves:Move[] = [];
   types:string[] = [];
-  counter:number = 0;
+  counter:number = 0
   newCounter:number = 0;
-  custName:string;
+  custName:string = "";
 
   name:string;
   id:string;
@@ -63,81 +67,126 @@ export class BackpackComponent implements OnInit {
   curMove:string [] = [];
   curType:string[] = [];
   curDateAdded:string;
+
+  serverPokemon:ServerTrainer;
+  ret:any;
+  userId: number = null;
   
-  
-  constructor(private pokeService: AjaxCallService, private modalService: BsModalService, private globalPokes: GlobalPokes) { }
+  constructor(private pokeService: AjaxCallService, private modalService: BsModalService,
+     private globalPokes: GlobalPokes, private getUserPokesServer: GetUserPokesService,
+     private globalUser: GlobalUser, @Inject(SESSION_STORAGE) private session: WebStorageService) { }
 
   ngOnInit() {
-    this.getPokes();
-  }    
+    let token = sessionStorage.getItem('token');
 
-  //TODO - gotta...ya know, do DB calls so we can get the correct moves and such
-  // parses the info from AJAX
-
-  
-  getPokes(){
+    this.userId = parseInt(token.substring(1, token.length).split(":")[0]);
+    console.log(this.userId);
+    console.log("HERE's TRISTAN's STUFF!");
+    console.log(this.globalPokes);
+    
     if(this.globalPokes.getPokesLength() == 6){
       this.userPokeArr = this.globalPokes.getAllPokes();
       console.log("Calling draw components, globalPokes is already filled");
       this.drawComponents();
     } else {
+      //this.initInfo;
+      //this.userPokeArr = this.globalPokes.getAllPokes();
+      console.log("Time to fill globalPokes");
+      this.getUserPokes();
+    }
+  }
+  
+  
+  getUserPokes(){
+    this.getUserPokesServer.getUserPokes(this.userId).subscribe((ret) => {
+      this.serverPokemon = ret;
+      console.log(this.serverPokemon);
+
+      //user info from server
+      this.globalUser.dateCreated = this.serverPokemon.created;
+      this.globalUser.email = this.serverPokemon.email;
+      this.globalUser.id = this.serverPokemon.id;
+      this.globalUser.is_lead = this.serverPokemon.is_lead;
+      this.globalUser.username = this.serverPokemon.login;
+      console.log(this.globalUser);
+
+      //poke info from server
+      this.pokeInfoArr = this.serverPokemon.pokemon;
+      console.log(this.pokeInfoArr);
+      
       for(let i = 0; i < this.pokeInfoArr.length; i++){
-        console.log("Getting API info for Poke with id: " + this.pokeInfoArr[i].id + " and it's got a length of: " + this.pokeInfoArr.length);
-        this.pokeService.getPoke(this.pokeInfoArr[i].id).then((pokes)=>{
+        //console.log("Getting API info for Poke with id: " + this.pokeInfoArr[i].id + " and it's got a length of: " + this.pokeInfoArr.length);
+        // this.pokeService.getPoke(this.pokeInfoArr[i].pkmn_id).then((pokes)=>{
+        this.pokeService.getPoke(this.pokeInfoArr[i].pkmn_id).subscribe((pokes)=>{
           this.pokes = pokes;
           
           if(this.pokeArr.includes(this.pokes) === false)
             this.pokeArr.push(this.pokes); // add to a global array 
-          
-          console.log("CALLING DATA!!!");
-  
-          this.data(this.pokes);
+          console.log(this.pokeArr);
+          this.data(this.pokes, i);
         });/*.catch(function(error){
           console.log(error.error);
         })*/
       }
-    }
+    });
   }
   
 
 
-  data(pokes:Pokes){
-    console.log(this.globalPokes);
-    console.log(this.userPokeArr);
+  data(pokes:Pokes, i:number){
+    // console.log(this.globalPokes);
+    // console.log(this.userPokeArr);
 
     this.newCounter++;
-    let indx;
 
     this.userPoke.name = pokes.name;
     this.userPoke.id = pokes.id;
     this.userPoke.sprite = pokes["sprites"].front_default;
-    this.userPoke.dateAdded = this.dateAdded;
+    this.userPoke.dateAdded = null;
     this.userPoke.custName = this.custName;
 
-    if(pokes.name === 'ditto'){
-      this.userPoke.moveArr.push(pokes.moves[0].move.name);
+    if(this.pokeInfoArr[i].move_one === "" || this.pokeInfoArr[i].move_one === null){
+      this.userPoke.moveArr[0] = '';
     } else {
-      for(let k = 0; k < this.pokeInfoArr[this.counter].moveArr.length; k++){
-        let indx = this.pokeInfoArr[this.counter].moveArr[k];
-        this.userPoke.moveArr.push(pokes.moves[indx].move.name);
-      }
+      this.userPoke.moveArr[0]=pokes.moves[this.pokeInfoArr[i].move_one].move.name;
     }
 
-    ++this.counter;
-    console.log(this.counter);
+    if(this.pokeInfoArr[i].move_two === "" || this.pokeInfoArr[i].move_two === null){
+      this.userPoke.moveArr[1]= '';
+    } else {
+      this.userPoke.moveArr[1]=pokes.moves[this.pokeInfoArr[i].move_two].move.name;
+    }
+
+    if(this.pokeInfoArr[i].move_three === "" || this.pokeInfoArr[i].move_three === null){
+      this.userPoke.moveArr[2]= '';
+    } else {
+      this.userPoke.moveArr[2]=pokes.moves[this.pokeInfoArr[i].move_three].move.name;
+    }
+
+    if(this.pokeInfoArr[i].move_four === "" || this.pokeInfoArr[i].move_four === null){
+      this.userPoke.moveArr[3]= '';
+    } else {
+      this.userPoke.moveArr[3]=pokes.moves[this.pokeInfoArr[i].move_four].move.name;
+    }
+
+    console.log(this.userPoke.moveArr);
+
+    //++this.counter;
 
     for(let k = 0; k < pokes["types"].length; k++)
       this.userPoke.type.push(pokes["types"][k].type.name);      
+    
+    console.log(this.userPoke.type);
 
     this.userPokeArr.push(this.userPoke); 
-    console.log(this.userPokeArr);
+    // console.log(this.userPokeArr);
     this.globalPokes.setAllPokes(this.userPokeArr);
-    console.log(this.globalPokes.getAllPokes());
-    console.log("With length: " + this.globalPokes.getPokesLength());
-    console.log(this.userPokeArr);
+    // console.log(this.globalPokes.getAllPokes());
+    // console.log("With length: " + this.globalPokes.getPokesLength());
+    // console.log(this.userPokeArr);
 
     // empty userPoke
-    this.userPoke = {id:"0", name:"", sprite:"", dateAdded:"", type:[], custName:"", moveArr:[]};
+    this.userPoke = {id:0, name:"", sprite:"", dateAdded:null, type:[], custName:"", moveArr:[]};
     
     this.drawComponents();
   }
@@ -160,6 +209,12 @@ export class BackpackComponent implements OnInit {
     }
   }
 
+  refreshPokes(){
+    //this.globalPokes.empty();
+    //this.userPokeArr = [];
+    //this.getPokes();
+  }
+
 
 
   openModalWithClass(template:TemplateRef<any>){
@@ -170,16 +225,19 @@ export class BackpackComponent implements OnInit {
   }
 
   //TODO - implement this later. 
-  setCurrData(event){
-    console.log("HIIIII!!");
-    //console.log(event.id);
-    //let indx = event.target.id;
-    /*
-    this.curType = this.userPokeArr[indx].type;
-    this.curSpriteURL = this.userPokeArr[indx].sprite;
-    this.curPokeAge = "12";
-    this.curId = this.userPokeArr[indx].id;
-    this.curMove = this.userPokeArr[indx].moveArr;*/
+  setCurrData(userPokemon){
+    // console.log("HIIIII!!");
+    console.log(userPokemon);
+
+    
+    this.types = userPokemon.type;
+    this.spriteURL = userPokemon.sprite;
+    this.pokeAge = "12";
+    this.id = userPokemon.id;
+    this.moves = userPokemon.moveArr;
+    this.custName = userPokemon.custName;
+
+    console.log(this.custName);
   }
 
 

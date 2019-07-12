@@ -4,6 +4,7 @@ import { BackpackComponent } from './components/backpack/backpack.component';
 import { TeamInfoComponent } from './components/teamInfo/teamInfo.component';
 import { TeamexplorerComponent } from './components/teamexplorer/teamexplorer.component';
 import { RequestsComponent } from './components/requests/requests.component';
+import { LoginComponent } from './components/login/login.component';
 
 const routes: Routes = [{
   path:'backpack',
@@ -17,7 +18,14 @@ const routes: Routes = [{
 },{
   path:'requests',
   component: RequestsComponent
-}];
+},{
+  path: 'login',
+  component: LoginComponent
+},{
+  path: '',
+  component: LoginComponent
+}
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

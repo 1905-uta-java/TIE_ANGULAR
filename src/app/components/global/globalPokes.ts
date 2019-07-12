@@ -13,7 +13,7 @@ export class GlobalPokes{
 
     getSinglePoke(id:number){
         for(let i = 0; i < this.pokes.length; i++){
-            if(this.pokes[i].id === id.toString()){
+            if(this.pokes[i].id === id){
                 return this.pokes[i]
             }
         }
@@ -30,5 +30,9 @@ export class GlobalPokes{
 
     getPokesLength(){
         return this.pokes.length;
+    }
+
+    empty(){
+        this.pokes = [];
     }
 }

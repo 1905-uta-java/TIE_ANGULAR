@@ -37,8 +37,14 @@ export class GlobalTeam{
 
     //ADMIN ONLY: sets the team name. 
     //Also might interact with DB when it's all said and done.
-    setTeamName(){
+    setTeamName(teamName:string){
+        this.teamName = teamName;
         //check if user is admin first, then it's all good
+    }
+
+    empty(){
+        this.teamName = "";
+        this.teammates = [];
     }
 
     

@@ -1,3 +1,14 @@
+<div class = 'container page-title'>
+    <div class = 'row'>
+        <div class = 'col col-12'>
+            <h1>Team Info</h1>
+        </div>
+        <!-- <div class = 'col col-2'>
+            <button class = 'btn btn-default ref-btn'>Refresh</button>
+        </div> -->
+    </div>
+</div>
+
 <div class = 'container'>
     <div class = 'row'>
         <div class = 'col-12'>
@@ -9,11 +20,11 @@
 
 <div class = 'container all-team-members'>
     <div class = 'row justify-contents-center'>
-        <div *ngFor = 'let teammate of teammatesArr' class = 'col col-lg-4 col-md-6 col-sm-10'>
-            <div class = 'team-member'>
+        <div *ngFor = 'let teammate of teammatesArr' class = 'col col-lg-4 col-md-6 col-sm-10 team-member-box'>
+            <div class = 'team-member' [ngStyle]="{'background-color':teammate.is_lead === 1 ? '#FFC107' : '#e9e9e9'}">
                 <div class = 'row'>
                     <div class = 'col col-lg-3 col-md-3 col-sm-3 pokeIcon'>
-                        <img class = 'user-icon' alt='user-icon' src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/2.png'>
+                        <img *ngIf='teammate.userPokeArr[0]' class = 'user-icon' alt='user-icon' src='{{teammate.userPokeArr[0].sprite}}'>
                     </div>
                     <div class = 'col col-lg-7 col-md-6 col-sm-6'>
                         <label class = 'pokeLabel'>user</label>
@@ -26,12 +37,12 @@
                 </div>
                 <hr class = 'dark-hr'>
                 <div class = 'row'>
-                    <div class = 'col col-2 poke-sm-head'>#</div>
+                    <div class = 'col col-2 poke-sm-head text-right'>#</div>
                     <div class = 'col col-lg-7 col-md-6 col-sm-6 col-6 poke-sm-head'>Pok&eacute;mon</div>
                     <div class = 'col col-1 poke-sm-head'>lvl</div>
                 </div>
                 <div *ngFor = 'let poke of teammate.userPokeArr; let i = index' class = 'row'>
-                    <div class = 'col col-lg-2 col-2'>
+                    <div class = 'col col-lg-2 col-2 text-right'>
                         {{i + 1}}
                     </div>
                     <div class = 'col col-lg-7 col-md-6 col-sm-6 col-6'>
@@ -43,7 +54,7 @@
                 </div>
                 <div class = 'row'>
                     <div class = 'col-12'>
-                        <button id = 'trade-btn' class = 'btn btn-warning' (click)="openModalWithClass(trade)">Trade</button>
+                        <button id = 'trade-btn' class = 'btn btn-warning' (click)="showInfo(teammate); openModalWithClass(trade)" [ngStyle]="{'background-color':teammate.is_lead === 1 ? '#e9e9e9': '#FFC107'}" >Trade</button>
                     </div>
                 </div>
             </div>
@@ -54,45 +65,69 @@
 
 <ng-template #trade>
     <div class="modal-header">
-        <h4 class="modal-title pull-left">Trade with theDude01</h4>
-        <button type="button" class="close pull-right" (click)="trade.hide()" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-        </button>
+        <div class = 'col-12 row'>
+            <div class = 'col'>
+                <h4 class="modal-title text-left">Trade with {{selTeammate.username}}</h4>
+            </div>
+            <div class = 'col col-1 float-right'>
+                <button type="button" class="close text-right" (click)="closeModal()" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
     </div>
     <div class="modal-body">
-        <div class="form-group">
+        <div class = 'row'>
+            <div class = 'col-5'>
+                <h3>{{selTeammate.username}}</h3>
+            </div>
+            <div class = 'col-7 text-right'>
+                <h3>You</h3>
+            </div>
+        </div>
+        <div class="form-group" *ngFor='let pokemon of selTeammate.userPokeArr; let i = index'>
             <div class = 'row'>
                 <div class = 'col col-1'>
-                    <!-- <img src = "{{spriteURL}}"> -->
-                    <img src = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png">
+                    <img src = "{{pokemon.sprite}}">
                 </div>
-                <div class = 'col col-1 offset-1'>
+                <div class = 'col col-1 cust-offset text-right'>
                     <label class = 'pokeLabel'>lvl</label>
                     <div class = 'pokeIdModal'>19</div>
-                    <!-- <div class = 'pokeIdModal'>{{lvl}}</div> -->
                 </div>
-                <div class = 'col col-3 rightBorder'>
+                <div class = 'col col-2 rightBorder text-right'>
                     <label class = 'pokeLabel'>Moves</label>
-                    <div>
-                        <span>yadda</span><br>
-                        <span>yadda</span><br>
-                        <span>yadda</span><br>
-                        <span>yadda</span><br>
+                    <div *ngFor = 'let move of pokemon.moveArr'>
+                        <span class = 'small-move'>{{move}}</span><br>
                     </div>
-                    <!-- <div *ngFor='let move of moves'>
-                        <span>{{move}}</span><br>
-                    </div> -->
                 </div>
-                <div class = 'col col-3'>
-                    <div class = 'pokeLabel'>Pok&eacute; Info</div>
-                    <div id = 'pokeInfo1'></div>
+        <!-- OOOOKAY this is user's chosen poke -->
+                <div class = 'col col-4'>
+                    <div *ngIf='tradePokeArr[i].id == 0'>
+                        <label>No Poke Selected</label>
+                    </div>
+                    <div *ngIf='tradePokeArr[i].id != 0'>
+                        <div class = 'row'>
+                            <div class = 'col-6'>
+                                <div class = 'pokeLabel'>Moves</div>
+                                <div *ngFor = 'let move of tradePokeArr[i].moves'>
+                                    <span class = 'small-move'>{{move.move.name}}</span><br>
+                                </div>
+                            </div>
+                            <div class = 'col-3'>
+                                <label class = 'pokeLabel'>lvl</label>
+                                <div class = 'pokeIdModal'>14</div>
+                            </div>
+                            <div class = 'col-3'>
+                                <img src = "{{tradePokeArr[i].sprite.front_default}}">
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-                <div class = 'col col-3'>
-                    <select class = 'tradePokePicker-btn big-boy-btn btn'>
-                        <option value = '0' selected disabled>Select Pok&eacute;mon</option>
-                        <option value = '1'>Pikachu : 18</option>
-                        <option value = '2'>Richu : 18</option>
-                        <option value = '3'>Charizard : 18</option>
+                <div class = 'col col-3 cust-offset-3'>
+                    <select class = 'tradePokePicker-btn big-boy-btn btn cust-offset-2' (change)='showPokeInfo($event.target.value, i)'>
+                        <option value = '0' (click)='showPokeInfo(0)' selected>Select Pok&eacute;mon</option>
+                        <option *ngFor='let pokes of currentUser.userPokeArr' [value] = 'pokes.id'>{{pokes.name}} ({{pokes.id}})</option>
                     </select>
                 </div>
             </div>
@@ -101,51 +136,16 @@
                     <hr>
                 </div>
             </div>
-            <div class = 'row'>
-                <div class = 'col col-1'>
-                    <!-- <img src = "{{spriteURL}}"> -->
-                    <img src = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/132.png">
-                </div>
-                <div class = 'col col-1 offset-1'>
-                    <label class = 'pokeLabel'>lvl</label>
-                    <div class = 'pokeIdModal'>10</div>
-                    <!-- <div class = 'pokeIdModal'>{{lvl}}</div> -->
-                </div>
-                <div class = 'col col-3 rightBorder'>
-                    <label class = 'pokeLabel'>Moves</label>
-                    <div>
-                        <span>yadda</span><br>
-                        <span>yadda</span><br>
-                        <span>yadda</span><br>
-                        <span>yadda</span><br>
-                    </div>
-                    <!-- <div *ngFor='let move of moves'>
-                        <span>{{move}}</span><br>
-                    </div> -->
-                </div>
-                <div class = 'col col-3'>
-                    <div class = 'pokeLabel'>Pok&eacute; Info</div>
-                    <div id = 'pokeInfo1'></div>
-                </div>
-                <div class = 'col col-3'>
-                    <select class = 'tradePokePicker-btn big-boy-btn btn'>
-                        <option value = '0' selected disabled>Select Pok&eacute;mon</option>
-                        <option value = '1'>Pikachu : 18</option>
-                        <option value = '2'>Richu : 18</option>
-                        <option value = '3'>Charizard : 18</option>
-                    </select>
-                </div>
-            </div>
         </div>
     </div>
     <div class = 'modal-footer'>
-            <div class = 'col col-6'>
-                <button class = 'btn btn-warning'>Send Trade Request</button>
-            </div>
-            <div class = 'col col-6'>
-                <button class = 'btn btn-default'>Canel</button>
-            </div>
+        <div class = 'col col-6'>
+            <button class = 'btn btn-warning' (click)='sendTradeRequest()'>Send Trade Request(s)</button>
         </div>
+        <div class = 'col col-6'>
+            <button class = 'btn btn-default' (click)="closeModal()" aria-label='Close'>Canel</button>
+        </div>
+    </div>
 </ng-template>
 
 

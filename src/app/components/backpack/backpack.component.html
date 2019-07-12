@@ -1,4 +1,17 @@
-<div *ngFor = 'let userPokemon of userPokeArr' id = 'poke{{userPokemon.id}}' (click)="setCurrData($event); lgModal.show()"> <!-- {{userPokeArr[i].id}} -->
+<!-- <div class = 'bg-white page-title'> -->
+    <div class = 'container page-title'>
+      <div class = 'row'>
+          <div class = 'col col-12'>
+              <h1>Backpack</h1>
+          </div>
+          <!-- <div class = 'col col-2'>
+            <button class = 'btn btn-default ref-btn' (click)='refreshPokes()'>Refresh</button>
+          </div> -->
+      </div>
+    </div>
+  <!-- </div> -->
+
+<div *ngFor = 'let userPokemon of userPokeArr' id = 'poke{{userPokemon.id}}' (click)="setCurrData(userPokemon); lgModal.show()"> <!-- {{userPokeArr[i].id}} -->
   <div class = 'col-lg-10 col-md-12 offset-lg-1 offset-md-0' >
     <div  class = 'row' >
       <div class = 'col col-lg-2 col-md-2 col-sm-2 offset-lg-0 offset-sm-1 offset-md-2 pokeImg'>
@@ -22,7 +35,7 @@
         <div class = 'pokeMoveList'> 
           <div *ngIf="userPokemon.moveArr.length > 0; else elseBlock">
             <div *ngFor='let move of userPokemon.moveArr'>
-                <span>{{move}}</span><br>
+                <span *ngIf="move">{{move}}</span><br>
             </div>
           </div>
           <ng-template #elseBlock>N/A</ng-template>
@@ -66,7 +79,7 @@
               </div>
               <div class = 'col col-lg-4 col-md-6 col-sm-12 col-12'>
                 <label for = 'pokeNewName' class = 'pokeLabel'>Name</label>
-                <input type = 'text' id = 'pokeNewName' class = 'form-control'>
+                <input type = 'text' id = 'custPokeName' [value] = 'custName' class = 'form-control'>
               </div>
               <div class = 'col col-1 offset-lg-1 offset-md-0'>
                 <label class = 'pokeLabel'>lvl</label>
@@ -95,7 +108,7 @@
                     <span>{{type}}</span><br>
                   </div>
               </div>
-              <div class = 'col col-3 col-sm-6'>
+              <div class = 'col col-3 col-lg-3 col-md-3 col-sm-6'>
                 <label class = 'pokeLabel'>Date Added</label>
                 <div>{{dateAdded}}</div>
                 </div>

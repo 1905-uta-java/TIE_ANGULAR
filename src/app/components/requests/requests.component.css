@@ -1,0 +1,67 @@
+.req{
+    border-bottom: 1px solid lightgray;
+}
+
+.btn-all{
+    width:100%;
+}
+
+.response-btns{
+    margin-top:10px;
+}
+
+.response-btn-container{
+    margin-top: 20px;
+}
+
+.more-arrow{
+    font-size:15pt;
+}
+
+#up-arrow{
+    cursor: pointer;
+}
+
+#down-arrow{
+    cursor: pointer;
+}
+
+.pokeLabel{
+    /*line-height: -12px;*/
+    margin-bottom: 0;
+    font-size: 10pt;
+    font-weight: bold;
+    display:block;
+}
+
+
+.ref-btn{
+    margin-top:10px;
+}
+
+
+.page-title{
+    margin-top: 10px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid lightgray;
+    position: sticky;
+    top: 0px;
+    background-color: white;
+    z-index: 100;
+}
+
+.sep{
+    border-right: 1px solid lightgray;
+}
+
+.inline{
+    display: inline !important;
+}
+
+.reqImg{
+    margin-top: -12x;
+}
+
+.reqType{
+    font-size: 15pt;
+}

@@ -2,8 +2,14 @@ import { PokeInfo } from './PokeInfo';
 import { UserPokes } from './UserPokes';
 
 export interface TeammateInfo{
+    id:number,
     username:string,
-    pokes:PokeInfo[],
+    email:string,
+    pokes:Array<PokeInfo>,
+    //pokes:PokeInfo[],
     level: string,
-    userPokeArr: UserPokes[]
+    team_id:number,
+    is_lead:number,
+    userPokeArr: Array<UserPokes>
+    // userPokeArr: UserPokes[]
 }

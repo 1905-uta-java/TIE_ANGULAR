@@ -1,32 +1,41 @@
-<!-- <div class = 'container all-teams'>
+<div class = 'container page-title'>
+        <div class = 'row'>
+            <div class = 'col col-8'>
+                <h1>Team Explorer</h1>
+            </div>
+            <div class = 'col col-2'>
+                <button class = 'btn btn-default ref-btn text-right' (click) = 'refresh()'>Refresh</button>
+            </div>
+            <div class = 'col col-2'>
+                    <button class = 'btn btn-warning ref-btn' (click)='createTeamModal.show()'>New Team</button>
+            </div>
+        </div>
+    </div>
+
+<div class = 'container all-teams'>
     <div class = 'row justify-contents-center'>
-        <div class = 'col col-lg-6 col-sm-10'>
-            <div class = 'team-member'>
+        <div class = 'col col-lg-4 col-sm-10 margin-top-10' *ngFor='let team of serverTeam'>
+            <div class = 'team'>
                 <div class = 'row'>
-                    <div class = 'col col-2 col-lg-2 col-md-3 col-sm-3 pokeIcon'>
-                        <img class = 'user-icon' alt='user-icon' src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/2.png'>
+                    <div class = 'col col-8'>
+                        <div class ='team-name'>{{team.teamName}}</div> <!-- Team Name -->
                     </div>
-                    <div class = 'col col-lg-7 col-md-6 col-sm-6'>
-                        <label class = 'pokeLabel'>user</label>
-                        <div class ='team-member-username'>{{teammate.username}}</div>
-                    </div>
-                    <div class = 'col col-lg-2 col-md-2 col-sm-2'>
-                        <label class = 'pokeLabel'>lvl</label>
-                        <div class = 'team-member-lvl'>{{teammate.level}}</div>
+                    <div class = 'col col-lg-4 col-md-4 col-sm-4 text-right'>
+                        <label class = 'pokeLabel'>avg lvl</label>
+                        <div class = 'team-avg-lvl'>40</div>
                     </div>
                 </div>
                 <hr class = 'dark-hr'>
                 <div class = 'row'>
-                    <div class = 'col col-2 poke-sm-head'>#</div>
-                    <div class = 'col col-lg-7 col-md-6 col-sm-6 col-6 poke-sm-head'>Pok&eacute;mon</div>
-                    <div class = 'col col-1 poke-sm-head'>lvl</div>
+                    <div class = 'col col-lg-7 col-md-6 col-sm-6 col-6 sm-head offset-3'>user</div>
+                    <div class = 'col col-1 sm-head'>lvl</div>
                 </div>
-                <div *ngFor = 'let poke of teammate.userPokeArr; let i = index' class = 'row'>
+                <div class = 'row padding-top-10' *ngFor = 'let teammate of team.team_mates' [ngStyle]="{'background-color':teammate.is_lead === 1 ? '#FFC107' : '#e9e9e9'}">
                     <div class = 'col col-lg-2 col-2'>
-                        {{i + 1}}
+                        <img *ngIf = 'teammate.pokemon[0]' class = 'user-icon' src = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{{teammate.pokemon[0].pkmn_id}}.png'>
                     </div>
-                    <div class = 'col col-lg-7 col-md-6 col-sm-6 col-6'>
-                        {{poke.name}}
+                    <div class = 'col col-lg-7 col-md-6 col-sm-6 col-6 offset-1'>
+                        {{teammate.login}}
                     </div>
                     <div class = 'col col-lg-1 col-1'>
                         15
@@ -34,12 +43,113 @@
                 </div>
                 <div class = 'row'>
                     <div class = 'col-12'>
-                        <button id = 'trade-btn' class = 'btn btn-warning' (click)="openModalWithClass(trade)">Trade</button>
+                        <button id = 'trade-btn' class = 'btn btn-warning' (click) = 'showTeam(team); viewTeam.show()'>View</button>
+                        <!-- <button *ngIf= 'serverTrainer.is_lead == 1' id = 'trade-btn' class = 'btn btn-warning'>View</button> -->
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div> -->
+</div>
+
+
+<div bsModal #createTeamModal='bs-modal' class = 'modal fade' tabindex='-1' role = 'dialog' aria-labelledby="dialog-sizes-name1">
+    <div class = 'modal-dialog modal-md'>
+        <div class = 'modal-content'>
+        <div class = 'modal-header'>
+            <div class = 'col-12 row'>
+            <div class = 'col'>
+                <h4 id='dialog-sizes-name1' class = 'modal-title pull-left'>Create Team </h4>
+            </div>
+            <div class = 'col col-1 float-right'>
+                <button type = 'button' class = 'close pull-right' (click)="createTeamModal.hide()" aria-label='Close'>
+                <span aria-hidden='true'>&times;</span>
+                </button>
+            </div>
+            </div>
+        </div>
+        <div class = 'modal-body'>
+            <div class = 'row form-group justify-contents-center'>
+                <div class = 'col col-8 offset-2'>
+                <label for ='teamName' class = 'pokeLabel'>Team Name</label>
+                <input type='text' id='teamName' [(ngModel)] = 'newTeamName' class = 'form-control'>
+                </div>
+            </div>
+            <div class = 'row'>
+                <div class = 'col col-12 text-center'>
+                    <label class = 'info-label'>Creating a team will set you as team leader.<br>If you're apart of a team now you will be reassigned.</label>
+                </div>
+            </div>
+
+        </div>
+        <div class = 'modal-footer'>
+        <div class = 'col col-6'>
+            <button class = 'btn btn-warning' (click)='createTeam($event)' [disabled] = 'createBtnDis'>{{createDesc}}</button>
+        </div>
+        <div class = 'col col-6'>
+            <button class = 'btn btn-default' (click)='createTeamModal.hide()'>Cancel</button>
+        </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+
+<div bsModal #viewTeam='bs-modal' class = 'modal fade' tabindex='-1' role = 'dialog' aria-labelledby="dialog-sizes-name1">
+    <div class = 'modal-dialog modal-lg'>
+        <div class = 'modal-content'>
+        <div class = 'modal-header'>
+            <div class = 'col-12 row'>
+            <div class = 'col'>
+                <h4 id='dialog-sizes-name1' class = 'modal-title pull-left'>{{curTeam.teamName}} </h4>
+            </div>
+            <div class = 'col col-1 float-right'>
+                <button type = 'button' class = 'close pull-right' (click)="viewTeam.hide()" aria-label='Close'>
+                <span aria-hidden='true'>&times;</span>
+                </button>
+            </div>
+            </div>
+        </div>
+        <div class = 'modal-body'>
+            <div *ngFor = 'let teammate of curTeam.team_mates'>
+                <div class = 'row stick-username team-member-usernames'>
+                    <div class = 'col-12 text-center border-bottom' [ngStyle]="{'background-color':teammate.is_lead === 1 ? '#FFC107' : '#e9e9e9'}">
+                        {{teammate.login}}
+                    </div>
+                </div>
+                <div class = 'row' >
+                    <div class = 'col col-4' *ngFor='let pokeInfo of teammate.pokemon; let i = index'>
+                        <div class = 'row'>
+                            <div class = 'col-5'>
+                                <img src = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{{pokeInfo.pkmn_id}}.png'>
+                            </div>
+                            <div class = 'col-2'>
+                                <label class = 'pokeLabel'>id</label>
+                                <div>{{pokeInfo.pkmn_id}}</div>
+                            </div>
+                            <div class = 'col-5'>
+                                <label class  = 'pokeLabel'>lvl</label>
+                                <div>19</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            </div>
+            
+        </div>
+        <div class = 'modal-footer'>
+        <div class = 'col col-6'>
+            <button class = 'btn btn-warning' (click)='joinTeam(curTeam)' [disabled] = 'createBtnDis'>{{joinBtnDesc}}</button>
+        </div>
+        <div class = 'col col-6'>
+            <button class = 'btn btn-default' (click)='viewTeam.hide()'>Cancel</button>
+        </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+
 
 
