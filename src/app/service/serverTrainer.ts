@@ -27,5 +27,26 @@ export interface ServerPokemon{
     move_three:string;
     move_four:string;
     nickname:string;
-
+    
 } //end of ... things
+
+export interface ServerReqPokemon{
+    id:number;
+    created:Date;
+    pkmn_id:number;
+    move_one:string;
+    trainer_id:ServerTrainer;
+    move_two:string;
+    move_three:string;
+    move_four:string;
+    nickname:string;
+    pokemon:ServerPokemon;
+    team_id:ServerTeam;
+
+}
+
+export interface ServerRequest{
+    id:number,
+    pkmn_1:ServerReqPokemon,
+    pkmn_2:ServerReqPokemon
+}

@@ -1,11 +1,11 @@
 <div class = 'container page-title'>
     <div class = 'row'>
-        <div class = 'col col-10'>
+        <div class = 'col col-12'>
             <h1>Team Info</h1>
         </div>
-        <div class = 'col col-2'>
+        <!-- <div class = 'col col-2'>
             <button class = 'btn btn-default ref-btn'>Refresh</button>
-        </div>
+        </div> -->
     </div>
 </div>
 
@@ -21,7 +21,7 @@
 <div class = 'container all-team-members'>
     <div class = 'row justify-contents-center'>
         <div *ngFor = 'let teammate of teammatesArr' class = 'col col-lg-4 col-md-6 col-sm-10 team-member-box'>
-            <div class = 'team-member'>
+            <div class = 'team-member' [ngStyle]="{'background-color':teammate.is_lead === 1 ? '#FFC107' : '#e9e9e9'}">
                 <div class = 'row'>
                     <div class = 'col col-lg-3 col-md-3 col-sm-3 pokeIcon'>
                         <img *ngIf='teammate.userPokeArr[0]' class = 'user-icon' alt='user-icon' src='{{teammate.userPokeArr[0].sprite}}'>
@@ -54,7 +54,7 @@
                 </div>
                 <div class = 'row'>
                     <div class = 'col-12'>
-                        <button id = 'trade-btn' class = 'btn btn-warning' (click)="showInfo(teammate); openModalWithClass(trade)">Trade</button>
+                        <button id = 'trade-btn' class = 'btn btn-warning' (click)="showInfo(teammate); openModalWithClass(trade)" [ngStyle]="{'background-color':teammate.is_lead === 1 ? '#e9e9e9': '#FFC107'}" >Trade</button>
                     </div>
                 </div>
             </div>

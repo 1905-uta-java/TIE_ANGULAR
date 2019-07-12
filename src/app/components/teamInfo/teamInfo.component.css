@@ -9,7 +9,13 @@ button{
 
 .team-member{
     border-radius:9px;
-    background-color: #e9e9e9;
+    /* background-color: #e9e9e9; */
+}
+
+.team-leader{
+    border-radius:9px;
+    /* background-color: #ffe867; */
+
 }
 
 .small-move{

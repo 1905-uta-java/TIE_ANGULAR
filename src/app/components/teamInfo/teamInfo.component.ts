@@ -217,7 +217,7 @@ export class TeamInfoComponent implements OnInit {
           if(this.teammatesArr[i].pokes[j].id){
             console.log("HERE WE AAAARE!");
             
-            this.pokeService.getPoke(this.teammatesArr[i].pokes[j].id).subscribe((pokes)=>{
+            this.pokeService.getPoke(this.teammatesArr[i].pokes[j].pkmn_id).subscribe((pokes)=>{
               this.pokeTempArr.push(this.teammatesArr[i].pokes[j]);
             
               // this.pokeService.getPoke(this.teammatesArr[i].pokes[j].id).then((pokes)=>{
